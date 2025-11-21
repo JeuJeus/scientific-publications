@@ -1,0 +1,85 @@
+html, body {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", "Oxygen Mono", "Courier New", monospace;
+    line-height: 1.6;
+    margin: 0 auto;
+    max-width: 960px;
+    padding: 20px;
+}
+
+input, textarea, select, button, code, pre, kbd, samp {
+    font-family: inherit;
+}
+
+header {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #ccc;
+}
+
+nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #006699;
+}
+
+section {
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+}
+
+h2 {
+    color: #333;
+}
+
+.publication-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.publication-list li {
+    margin-bottom: 15px;
+}
+
+footer {
+    text-align: center;
+    padding-top: 20px;
+    color: #666;
+    font-size: 0.9em;
+}
+
+/* IMPRINT */
+span.reverse {
+    unicode-bidi: bidi-override;
+    direction: rtl
+}
+
+span.reverse.address-street:before {
+    content: "15 eßarts"
+}
+
+span.reverse.address-street:after {
+    content: "dnikettiW"
+}
+
+span.reverse.address-city:before {
+    content: "dlef"
+}
+
+span.reverse.address-city:after {
+    content: "eleiB 51633"
+}
+span.reverse.email:before {
+    content: "ed.suejuej@"
+}
+
+span.reverse.email:after {
+    content: "snoitacilbup-cifitneics :liaM-E"
+}
+
+span.reverse.phone:before {
+    content: "17163667"
+}
+
+span.reverse.phone:after {
+    content: "751 94+ :enohP"
+}
