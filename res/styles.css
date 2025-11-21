@@ -48,38 +48,38 @@ footer {
 }
 
 /* IMPRINT */
-span.reverse {
+span.cmV2ZXJzZQ {
     unicode-bidi: bidi-override;
     direction: rtl
 }
 
-span.reverse.address-street:before {
+span.cmV2ZXJzZQ.YWRkcmVzcy1zdHJlZXQ:before {
     content: "15 eßarts"
 }
 
-span.reverse.address-street:after {
+span.cmV2ZXJzZQ.YWRkcmVzcy1zdHJlZXQ:after {
     content: "dnikettiW"
 }
 
-span.reverse.address-city:before {
+span.cmV2ZXJzZQ.YWRkcmVzcy1jaXR5Cg:before {
     content: "dlef"
 }
 
-span.reverse.address-city:after {
+span.cmV2ZXJzZQ.YWRkcmVzcy1jaXR5Cg:after {
     content: "eleiB 51633"
 }
-span.reverse.email:before {
+span.cmV2ZXJzZQ.ZW1haWw:before {
     content: "ed.suejuej@"
 }
 
-span.reverse.email:after {
-    content: "snoitacilbup-cifitneics :liaM-E"
+span.cmV2ZXJzZQ.ZW1haWw:after {
+    content: "snoitacilbup-cifitneics"
 }
 
-span.reverse.phone:before {
+span.cmV2ZXJzZQ.cGhvbmUK:before {
     content: "17163667"
 }
 
-span.reverse.phone:after {
-    content: "751 94+ :enohP"
+span.cmV2ZXJzZQ.cGhvbmUK:after {
+    content: "751 94+"
 }
