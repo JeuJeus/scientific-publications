@@ -6,6 +6,13 @@
     <title>Julius Figge - Scientific Publications</title>
     <link rel="stylesheet" href="./res/styles.css"/>
     <meta name="google-site-verification" content="ZKmGpWpiZjrNy6-GtiJYqSEj_8MGhXr4LZwaw9lzz_M"/>
+    <script>
+        const insertCurrentYear = () => {
+            const yearSpan = document.getElementById('current-year');
+            yearSpan.textContent = new Date().getFullYear();
+        };
+        document.addEventListener("DOMContentLoaded", () => insertCurrentYear())
+    </script>
 </head>
 
 <body>
@@ -80,7 +87,7 @@
 
 <footer>
     <p>&copy;
-        <script>document.write(new Date().getFullYear())</script>
+        <span id="current-year"></span>
         Julius Figge - <a href="./imprint-privacy-policy.html">Imprint & Privacy Policy</a>
     </p>
 </footer>
