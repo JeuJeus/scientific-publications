@@ -51,10 +51,29 @@ footer {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    align-content: flex-start;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.about-me-image-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
     align-content: center;
     justify-content: center;
     align-items: center;
-    gap: 1.5rem;
+}
+
+.about-me-details {
+    font-size: x-small;
+    color: #555;
+    text-align: left;
+}
+
+.about-me-details > summary {
+    text-align: center;
 }
 
 .about-me-text {
@@ -62,7 +81,7 @@ footer {
 }
 
 #qr-code-me {
-    width: 20px;
+    width: 200px;
     height: 200px;
     flex: 0 0 200px;
     object-fit: contain;

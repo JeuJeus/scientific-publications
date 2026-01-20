@@ -32,7 +32,7 @@
     <section id="about">
         <h2>About Me</h2>
         <div class="about-me-wrapper">
-            <div>
+            <div class="about-me-image-wrapper">
                 <img
                         id="qr-code-me"
                         src="./res/qr-code-me.svg"
@@ -40,6 +40,11 @@
                         loading="lazy"
                         decoding="async"
                 />
+                <details class="about-me-details">
+                    <summary>details</summary>
+                    This QR code actually works and encodes a link to this very website!<br>
+                    Shoutout to Russ Cox for <a href="https://research.swtch.com/qart" target="_blank">the implementation</a>.<br>
+                </details>
             </div>
             <div class="about-me-text">
                 <p>I'm currently pursuing my PhD at Mercedes-Benz Tech Innovation GmbH in collaboration with the
