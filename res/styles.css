@@ -47,6 +47,25 @@ footer {
     font-size: 0.9em;
 }
 
+.about-me-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+}
+
+#qr-code-me {
+    max-width: 30em;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
+    object-fit: contain;
+    display: block;
+}
+
 /* IMPRINT */
 span.cmV2ZXJzZQ {
     unicode-bidi: bidi-override;
@@ -68,6 +87,7 @@ span.cmV2ZXJzZQ.YWRkcmVzcy1jaXR5Cg:before {
 span.cmV2ZXJzZQ.YWRkcmVzcy1jaXR5Cg:after {
     content: "eleiB 51633"
 }
+
 span.cmV2ZXJzZQ.ZW1haWw:before {
     content: "ue.eggif@"
 }
