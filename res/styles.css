@@ -136,7 +136,6 @@ footer {
 .accent-color {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", "Noto Sans Mono", monospace;
     font-variant-ligatures: none;
-    -webkit-font-feature-settings: "liga" 0;
     font-feature-settings: "liga" 0;
     color: var(--accent-color);
 }
@@ -153,8 +152,8 @@ h1 {
         line-height: 1.1;
         word-break: normal;
         hyphens: auto;
-
-
+    }
+}
         /* IMPRINT */
 span.cmV2ZXJzZQ {
     unicode-bidi: bidi-override;
