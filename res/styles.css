@@ -54,16 +54,42 @@ footer {
     align-content: center;
     justify-content: center;
     align-items: center;
-    gap: 2em;
+    gap: 1.5rem;
+}
+
+.about-me-text {
+    text-align: left;
 }
 
 #qr-code-me {
-    max-width: 30em;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1/1;
+    width: 20px;
+    height: 200px;
+    flex: 0 0 200px;
     object-fit: contain;
     display: block;
+}
+
+@media (max-width: 720px) {
+    .about-me-wrapper {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    #qr-code-me {
+        width: 240px;
+        height: 240px;
+        flex: 0 0 240px;
+    }
+}
+
+@media (min-width: 1400px) {
+    #qr-code-me {
+        width: 240px;
+        height: 240px;
+        flex: 0 0 240px;
+    }
 }
 
 /* IMPRINT */
