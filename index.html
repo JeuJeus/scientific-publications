@@ -7,13 +7,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="./res/styles.css"/>
     <meta name="google-site-verification" content="ZKmGpWpiZjrNy6-GtiJYqSEj_8MGhXr4LZwaw9lzz_M"/>
-    <script>
-        const insertCurrentYear = () => {
-            const yearSpan = document.getElementById('current-year');
-            yearSpan.textContent = new Date().getFullYear();
-        };
-        document.addEventListener("DOMContentLoaded", () => insertCurrentYear())
-    </script>
+    <script src="res/script.js"></script>
+    <script src="res/cv-git-graph.js"></script>
 </head>
 
 <body>
@@ -25,6 +20,7 @@
     <nav>
         <a href="#about">About</a>
         <a href="#publications">Publications</a>
+        <a href="#cv">CV</a>
         <a href="#contact">Contact</a>
     </nav>
 </header>
@@ -68,7 +64,7 @@
     <section id="publications">
         <h2>Scientific Publications</h2>
         <ul class="publication-list">
-            <li>
+            <li id="arh-conference-paper">
                 <strong>Attack Resilience Hyperproperties: Formal Security Analysis of (Automotive) Network
                     Architectures under Active Compromise</strong>
                 <br>
@@ -80,7 +76,7 @@
                     href="./papers/Preprint_Paper_Attack-Resilience-Hyperproperties_Figge-et-al.pdf" target="_blank">PDF
                 (Preprint)</a>]
             </li>
-            <li>
+            <li id="survey-presentation-report">
                 <strong>Applications of Formal Verification Techniques for Security in the Context of Automotive
                     Diagnostics - a Literature-Survey</strong>
                 <br>
@@ -94,6 +90,189 @@
                     target="_blank">PDF (Direct Mirror)</a>]
             </li>
         </ul>
+    </section>
+
+    <section id="cv">
+        <h2>Curriculum Vitae (CV)</h2>
+
+        <div class="git-graph" id="git-graph">
+            <div class="graph-container" id="graph-container">
+                <svg class="graph-canvas" id="graph-canvas" xmlns="http://www.w3.org/2000/svg"></svg>
+
+                <div class="commit" data-id="l-startStudying" data-branch="life" data-parents="l-init"
+                     style="--order:1;">
+                    <div class="commit-dot" title="l-startStudying"></div>
+                    <div class="commit-message"><span class="commit-meta">2017</span>
+                        <div class="commit-message-wrapper">
+                            <span class="commit-message-details">Studying Computer Science</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="commit" data-id="a-csStudent" data-branch="academic" data-parents="l-startStudying"
+                     style="--order:2;">
+                    <div class="commit-dot" title="a-csStudent"></div>
+                    <div class="commit-message"><span class="commit-meta">2017</span>
+                        <div class="commit-message-wrapper">
+                            <span class="commit-message-short">Computer Science</span>
+                            <span class="commit-message-details">Student at Uni Leipzig</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="commit" data-id="a-acsStudent" data-branch="academic" data-parents="a-csStudent"
+                     style="--order:3;">
+                    <div class="commit-dot" title="a-acsStudent"></div>
+                    <div class="commit-message"><span class="commit-meta">2019</span>
+                        <div class="commit-message-wrapper">
+                            <span class="commit-message-short">Applied Computer Science</span>
+                            <span class="commit-message-details">Student at FHDW Paderborn</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="commit" data-id="w-dualStudent" data-branch="work" data-parents="a-acsStudent"
+                     style="--order:4;">
+                    <div class="commit-dot" title="w-dualStudent"></div>
+                    <div class="commit-message"><span class="commit-meta">2019</span>
+                        <div class="commit-message-wrapper">
+                            <span class="commit-message-short">Software Engineer</span>
+                            <span class="commit-message-details">as Dual Student at klose brothers GmbH</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="commit" data-id="l-finishBachelor" data-branch="life"
+                     data-parents="a-acsStudent,l-startStudying" style="--order:4;">
+                    <div class="commit-dot" title="l-finishBachelor"></div>
+                    <div class="commit-message"><span class="commit-meta">2021</span>
+                        <div class="commit-message-wrapper">
+                            <span class="commit-message-short">B.Sc. Applied Computer Science</span>
+                            <span class="commit-message-details">Graduated at FHDW Paderborn</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="commit" data-id="w-softwareEngineer" data-branch="work" data-parents="w-dualStudent"
+                     style="--order:5;">
+                    <div class="commit-dot" title="w-softwareEngineer"></div>
+                    <div class="commit-message"><span class="commit-meta">2021</span>
+                        <div class="commit-message-wrapper">
+                            <span class="commit-message-short">Software Engineer</span>
+                            <span class="commit-message-details">at klose brothers GmbH</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="commit" data-id="l-startStudyingMaster" data-branch="life" data-parents="l-finishBachelor"
+                     style="--order:6;">
+                    <div class="commit-dot" title="l-startStudyingMaster"></div>
+                    <div class="commit-message"><span class="commit-meta">2021</span>
+                        <div class="commit-message-wrapper">
+                            <span class="commit-message-details">Studying Cyber Security</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="commit" data-id="a-scmaster" data-branch="academic" data-parents="l-startStudyingMaster"
+                     style="--order:7;">
+                    <div class="commit-dot" title="a-scmaster"></div>
+                    <div class="commit-message"><span class="commit-meta">2021</span>
+                        <div class="commit-message-wrapper">
+                            <span class="commit-message-short">Cyber Security and Forensics</span>
+                            <span class="commit-message-details">Student at HS Wismar</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="commit" data-id="w-ciso" data-branch="work" data-parents="w-softwareEngineer"
+                     style="--order:8;">
+                    <div class="commit-dot" title="w-ciso"></div>
+                    <div class="commit-message"><span class="commit-meta">2023</span>
+                        <div class="commit-message-wrapper">
+                            <span class="commit-message-short">CISO</span>
+                            <span class="commit-message-details">Got promoted at klose brothers GmbH</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="commit" data-id="l-finishMaster" data-branch="life"
+                     data-parents="l-startStudyingMaster,a-scmaster" style="--order:9;">
+                    <div class="commit-dot" title="l-finishMaster"></div>
+                    <div class="commit-message"><span class="commit-meta">2023</span>
+                        <div class="commit-message-wrapper">
+                            <span class="commit-message-short">M.Eng. Cyber Security and Forensics</span>
+                            <span class="commit-message-details">Graduated at HS Wismar</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="commit" data-id="l-startPhd" data-branch="life" data-parents="l-finishMaster,w-ciso"
+                     style="--order:10;">
+                    <div class="commit-dot" title="l-startPhd"></div>
+                    <div class="commit-message"><span class="commit-meta">2024</span>
+                        <div class="commit-message-wrapper">
+                            <span class="commit-message-details">Started PhD</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="commit" data-id="w-doctoralStudent" data-branch="work" data-parents="l-startPhd"
+                     style="--order:11;">
+                    <div class="commit-dot" title="w-doctoralStudent"></div>
+                    <div class="commit-message"><span class="commit-meta">2024</span>
+                        <div class="commit-message-wrapper">
+                            <span class="commit-message-short">Doctoral Student</span>
+                            <span class="commit-message-details">at Mercedes-Benz Tech Innovation GmbH</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="commit" data-id="a-phdStudent" data-branch="academic" data-parents="l-startPhd"
+                     style="--order:12;">
+                    <div class="commit-dot" title="a-phdStudent"></div>
+                    <div class="commit-message"><span class="commit-meta">2024</span>
+                        <div class="commit-message-wrapper">
+                            <span class="commit-message-short">PhD Student</span>
+                            <span class="commit-message-details">at Leipzig University</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="commit" data-id="a-survey" data-branch="academic"
+                     data-parents="a-phdStudent" style="--order:14;">
+                    <div class="commit-dot" title="a-survey"></div>
+                    <div class="commit-message"><span class="commit-meta">2024</span>
+                        <div class="commit-message-wrapper">
+                            <span class="commit-message-short"><a href="#survey-presentation-report">Presentation Report</a></span>
+                            <span class="commit-message-details">at Datamod, Aveiro, Portugal</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="commit" data-id="a-paper-arh" data-branch="academic"
+                     data-parents="a-phdStudent" style="--order:14;">
+                    <div class="commit-dot" title="a-paper-arh"></div>
+                    <div class="commit-message"><span class="commit-meta">2025</span>
+                        <div class="commit-message-wrapper">
+                            <span class="commit-message-short"><a href="#arh-conference-paper">Conference Paper</a></span>
+                            <span class="commit-message-details">at SEFM, Toledo, Spain</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="commit" data-id="l-continue" data-branch="life" data-parents="l-startPhd"
+                     style="--order:15;">
+                    <div class="commit-dot" title="l-continue"></div>
+                    <div class="commit-message"><span class="commit-meta current-year">20xx</span>
+                        <div class="commit-message-wrapper">
+                            <span class="commit-message-details">Pursuing PhD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
 
     <section id="contact">
@@ -115,9 +294,15 @@
 
 <footer>
     <p>&copy;
-        <span id="current-year"></span>
+        <span class="current-year"></span>
         Julius Figge - <a href="./imprint-privacy-policy.html">Imprint & Privacy Policy</a>
     </p>
 </footer>
+
+<script>
+
+</script>
+
 </body>
 </html>
+

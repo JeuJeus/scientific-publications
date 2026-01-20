@@ -158,7 +158,8 @@ h1 {
         hyphens: auto;
     }
 }
-        /* IMPRINT */
+
+/* IMPRINT */
 span.cmV2ZXJzZQ {
     unicode-bidi: bidi-override;
     direction: rtl
@@ -194,4 +195,102 @@ span.cmV2ZXJzZQ.cGhvbmUK:before {
 
 span.cmV2ZXJzZQ.cGhvbmUK:after {
     content: "751 94+"
+}
+
+/* GIT GRAPH */
+.git-graph {
+    margin-top: 1rem;
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.git-graph .graph-container {
+    position: relative;
+    min-height: 240px;
+    padding: 12px 160px 12px 12px;
+}
+
+.git-graph .graph-canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.git-graph .lane-labels {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+    font-size: x-small;
+    color: #444;
+}
+
+.git-graph .commit {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    left: 0;
+    top: 0;
+    transform: translateY(-50%);
+    cursor: default;
+    width: 100%;
+}
+
+.git-graph .commit .commit-dot {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04) inset, 0 1px 2px rgba(0, 0, 0, 0.08);
+    flex: 0 0 14px;
+}
+
+.git-graph .commit .commit-message {
+    position: absolute;
+    margin-left: 6em;
+    color: #222;
+    font-size: 0.95rem;
+    line-height: 1.2;
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    align-items: flex-start;
+}
+
+.git-graph .commit .commit-message .commit-message-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+.git-graph .commit .commit-message .commit-message-wrapper .commit-message-short {
+    font-weight: bold;
+}
+
+.git-graph .commit .commit-meta {
+    margin-top: 4px;
+    font-size: 0.75rem;
+    color: #666;
+    margin-right: 1em;
+}
+
+.git-graph .graph-note {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: #555;
+}
+
+@media (max-width: 720px) {
+    .git-graph .commit .commit-message {
+        max-width: 220px;
+        font-size: small;
+    }
 }
