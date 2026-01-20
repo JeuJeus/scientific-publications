@@ -1,3 +1,7 @@
+:root {
+    --accent-color: #006699;
+}
+
 html, body {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", "Oxygen Mono", "Courier New", monospace;
     line-height: 1.6;
@@ -19,7 +23,7 @@ header {
 nav a {
     margin: 0 10px;
     text-decoration: none;
-    color: #006699;
+    color: var(--accent-color);
 }
 
 section {
@@ -111,7 +115,47 @@ footer {
     }
 }
 
-/* IMPRINT */
+.terminal-prompt {
+    display: inline-block;
+    animation: terminalPromptBlink 2s steps(2, start) infinite;
+    line-height: 1;
+}
+
+@keyframes terminalPromptBlink {
+    0% {
+        visibility: visible;
+    }
+    50% {
+        visibility: hidden;
+    }
+    100% {
+        visibility: visible;
+    }
+}
+
+.accent-color {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", "Noto Sans Mono", monospace;
+    font-variant-ligatures: none;
+    -webkit-font-feature-settings: "liga" 0;
+    font-feature-settings: "liga" 0;
+    color: var(--accent-color);
+}
+
+h1 {
+    font-size: clamp(1.25rem, 3.5vw, 2.2rem);
+    line-height: 1.15;
+    margin: 0.25em 0;
+}
+
+@media (max-width: 720px) {
+    h1 {
+        font-size: 1rem;
+        line-height: 1.1;
+        word-break: normal;
+        hyphens: auto;
+
+
+        /* IMPRINT */
 span.cmV2ZXJzZQ {
     unicode-bidi: bidi-override;
     direction: rtl
