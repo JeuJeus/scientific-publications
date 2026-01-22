@@ -14,7 +14,7 @@ const defineBranchColorsAsCssVariables = () => {
 };
 
 const VERTICAL_Y_COMMIT_SPACING = 65;
-const HORIZONTAL_LANGE_GAP = 30;
+const HORIZONTAL_LANE_GAP = 30;
 const GRAPH_CONTAINER_LEFT_PADDING = 2;
 
 const parseParentsRawToArray = parentsRaw => parentsRaw
@@ -74,7 +74,7 @@ const calculateKinkedPath = (fromNode, fromPosition, toNode, toPosition) => {
     return `M ${fromPosition.x} ${fromPosition.y} L ${middleOfX} ${middleOfY} L ${toPosition.x} ${toPosition.y}`;
 };
 
-const drawLinkAsPath = (fromNode, fromPosition, toNode, toPosition, color = '#999') => {
+const drawLinkAsPath = (fromNode, fromPosition, toNode, toPosition, color ) => {
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
     Object.entries({
@@ -115,7 +115,7 @@ const ensureCommitsOnTop = commitNodes => commitNodes.forEach(commitNode => comm
 
 const generateCommitCoordinates = (branchIndex, commitNode, commitNodes, idx) => {
     const lane = branchIndex.get(commitNode.branch);
-    const x = GRAPH_CONTAINER_LEFT_PADDING + lane * HORIZONTAL_LANGE_GAP;
+    const x = GRAPH_CONTAINER_LEFT_PADDING + lane * HORIZONTAL_LANE_GAP;
     const y = VERTICAL_Y_COMMIT_SPACING / 2 + (commitNodes.length - 1 - idx) * VERTICAL_Y_COMMIT_SPACING;
     return {x, y};
 };
@@ -140,6 +140,7 @@ const updateCommitElement = (commitNode, {x, y}) => {
         if (commitMeta) {
             console.log(commitMeta)
             commitMeta.style.background = backgroundColor;
+            commitMeta.style.color = backgroundColor;
         }
     }
 };

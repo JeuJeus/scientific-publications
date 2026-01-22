@@ -303,6 +303,10 @@ span.cmV2ZXJzZQ.cGhvbmUK:after {
     border-width: 10px 10px 10px 0;
 }
 
+.git-graph .commit .commit-meta .commit-year-tag {
+    color: #fff;
+}
+
 .git-graph .graph-note {
     margin-top: 10px;
     font-size: 0.8rem;
