@@ -1,40 +1,45 @@
 const MAIN_BRANCH = 'life';
 const BRANCH_COLORS = {
-    'life': '#006699',     // Basis (Deep Ocean Blue)
-    'work': '#3385ad',     // Medium (Steel Blue)
-    'academic': '#66a3c2', // Light (Sky Blue)
+    'life': '#006699',
+    'work': '#3385ad',
+    'academic': '#66a3c2',
 };
 
 const defineBranchColorsAsCssVariables = () => {
-    const docRoot = document.documentElement;
+    const documentRoot = document.documentElement;
     Object.entries(BRANCH_COLORS)
-        .forEach(([name, col]) =>
-            docRoot.style.setProperty(`--branch-${name}`, col)
+        .forEach(([name, column]) =>
+            documentRoot.style.setProperty(`--branch-${name}`, column)
         );
 };
 
-const SPACING_Y = 65; // vertical spacing between commits
-const LANE_GAP = 30;  // horizontal gap between lanes
-const LEFT_PADDING = 2; // left padding inside graph-container for lane start
+const VERTICAL_Y_COMMIT_SPACING = 65;
+const HORIZONTAL_LANGE_GAP = 30;
+const GRAPH_CONTAINER_LEFT_PADDING = 2;
 
-const getCommitsParents = parentsRaw => parentsRaw ? parentsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+const parseParentsRawToArray = parentsRaw => parentsRaw
+    .split(',')
+    .map(element => element.trim())
+    .filter(Boolean);
 
-const getCommitOrder = el => {
-    const s = el.style.getPropertyValue('--order');
-    if (s) return Number(s);
+const getCommitsParents = parentsRaw => parentsRaw ? parseParentsRawToArray(parentsRaw) : [];
+
+const getCommitOrder = element => {
+    const styleContent = element.style.getPropertyValue('--order');
+    if (styleContent) return Number(styleContent);
     return 0;
 };
 
-const mapCommitElement = el => {
-    const id = el.dataset.id;
-    const branch = el.dataset.branch || 'main';
+const mapCommitElement = element => {
+    const id = element.dataset.id;
+    const branch = element.dataset.branch || 'main';
 
-    const parentsRaw = (el.dataset.parents || '').trim();
+    const parentsRaw = (element.dataset.parents || '').trim();
     const parents = getCommitsParents(parentsRaw);
 
-    const order = getCommitOrder(el);
+    const order = getCommitOrder(element);
 
-    return {el, id, branch, parents, order};
+    return {element, id, branch, parents, order};
 };
 
 const readInCommitNodes = container =>
@@ -53,83 +58,106 @@ const getLinkColor = (childNode, parentNode) => {
     }
 };
 
-const calculateKinkedPath = (fromNode, fromPos, toNode, toPos) => {
+const calculateKinkedPath = (fromNode, fromPosition, toNode, toPosition) => {
     if (fromNode.branch === toNode.branch) {
-        return `M ${fromPos.x} ${fromPos.y} L ${toPos.x} ${toPos.y}`;
+        return `M ${fromPosition.x} ${fromPosition.y} L ${toPosition.x} ${toPosition.y}`;
     }
 
-    const dy = toPos.y - fromPos.y;
+    const dy = toPosition.y - fromPosition.y;
 
     const intensity = 0.2;
     const kinkOffset = Math.abs(dy) * intensity;
 
-    const midX = (fromPos.x + toPos.x) / 2 + kinkOffset;
-    const midY = (fromPos.y + toPos.y) / 2;
+    const middleOfX = (fromPosition.x + toPosition.x) / 2 + kinkOffset;
+    const middleOfY = (fromPosition.y + toPosition.y) / 2;
 
-    return `M ${fromPos.x} ${fromPos.y} L ${midX} ${midY} L ${toPos.x} ${toPos.y}`;
+    return `M ${fromPosition.x} ${fromPosition.y} L ${middleOfX} ${middleOfY} L ${toPosition.x} ${toPosition.y}`;
 };
 
-const drawLinkAsPath = (fromNode, fromPos, toNode, toPos, color = '#999') => {
+const drawLinkAsPath = (fromNode, fromPosition, toNode, toPosition, color = '#999') => {
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
-    const attrs = {
-        'd': calculateKinkedPath(fromNode, fromPos, toNode, toPos,),
+    Object.entries({
+        'd': calculateKinkedPath(fromNode, fromPosition, toNode, toPosition,),
         'stroke': color,
         'stroke-width': '3',
         'fill': 'none',
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round',
         'opacity': '0.95'
-    };
-
-    Object.entries(attrs).forEach(([key, val]) => path.setAttribute(key, val));
+    })
+        .forEach(([key, val]) => path.setAttribute(key, val));
 
     return path;
 };
 
-const drawNodes = (commitNodes, idPos, svg) => {
-    commitNodes.forEach(childNode => {
-        const childPos = idPos.get(childNode.id);
-        if (!childPos) return;
-        if (childNode.parents.length === 0) return;
-        childNode.parents.forEach(parentId => {
-            let parentNode = commitNodes.find(node => node.id === parentId);
-            let color = getLinkColor(childNode, parentNode);
-            const parentPos = idPos.get(parentId);
-            if (!parentPos) return;
-            svg.appendChild(drawLinkAsPath(childNode, childPos, parentNode, parentPos, color));
-        });
-    });
+const drawLinkToChildNodes = (commitNodes, childNode, idPosition, svg, childPosition) => parentId => {
+    const parentNode = commitNodes.find(node => node.id === parentId);
+    const color = getLinkColor(childNode, parentNode);
+
+    const parentPosition = idPosition.get(parentId);
+    if (!parentPosition) return;
+
+    svg.appendChild(drawLinkAsPath(childNode, childPosition, parentNode, parentPosition, color));
 };
 
-const ensureCommitsOnTop = commitNodes => commitNodes.forEach(c => c.el.style.zIndex = 2);
+const drawNodes = (commitNodes, idPosition, svg) =>
+    commitNodes.forEach(childNode => {
 
-const generateCommitCoordinates = (branchIndex, c, commitNodes, idx) => {
-    const lane = branchIndex.get(c.branch);
-    const x = LEFT_PADDING + lane * LANE_GAP;
+        const childPosition = idPosition.get(childNode.id);
+        if (!childPosition || childNode.parents.length === 0) return;
 
-    const y = SPACING_Y / 2 + (commitNodes.length - 1 - idx) * SPACING_Y;
+        childNode.parents
+            .forEach(drawLinkToChildNodes(commitNodes, childNode, idPosition, svg, childPosition));
+    });
+
+const ensureCommitsOnTop = commitNodes => commitNodes.forEach(commitNode => commitNode.element.style.zIndex = 2);
+
+const generateCommitCoordinates = (branchIndex, commitNode, commitNodes, idx) => {
+    const lane = branchIndex.get(commitNode.branch);
+    const x = GRAPH_CONTAINER_LEFT_PADDING + lane * HORIZONTAL_LANGE_GAP;
+    const y = VERTICAL_Y_COMMIT_SPACING / 2 + (commitNodes.length - 1 - idx) * VERTICAL_Y_COMMIT_SPACING;
     return {x, y};
 };
 
-const calculateNodePositions = (commitNodes, branchIndex) => {
-    const idPos = new Map();
-    commitNodes.forEach((c, idx) => {
-        const {x, y} = generateCommitCoordinates(branchIndex, c, commitNodes, idx);
+const updateCommitElement = (commitNode, {x, y}) => {
+    const dot = commitNode.element.querySelector('.commit-dot');
+    const message = commitNode.element.querySelector('.commit-message');
 
-        const dot = c.el.querySelector('.commit-dot');
-        if (dot && !dot.style.background) dot.style.background = BRANCH_COLORS[c.branch] || '#999';
+    const commitMeta = message.querySelector('.commit-meta');
 
-        dot.style.left = (x - 9) + 'px   '; // adjust so dot center matches x (dot radius ~7)
-        dot.style.top = (y - 9) + 'px';
+    const backgroundColor = BRANCH_COLORS[commitNode.branch] || '#999';
 
-        const message = c.el.querySelector('.commit-message');
-        message.style.top = (y - 9) + 'px';
+    if (dot) {
+        if (!dot.style.background) dot.style.background = backgroundColor;
+        dot.style.left = `${x - 9}px`;
+        dot.style.top = `${y - 9}px`;
+    }
 
-        idPos.set(c.id, {x, y});
-    });
-    return idPos;
+    if (message) {
+        message.style.top = `${y - 9}px`;
+
+        if (commitMeta) {
+            console.log(commitMeta)
+            commitMeta.style.background = backgroundColor;
+        }
+    }
 };
+
+const calculateNodePositions = (commitNodes, branchIndex) =>
+    new Map(
+        commitNodes.map((commitNode, idx) => {
+            const coords = generateCommitCoordinates(branchIndex, commitNode, commitNodes, idx);
+            updateCommitElement(commitNode, coords);
+            return [commitNode.id, coords];
+        })
+    );
+
+const generateBranchIndex = commitNodes => commitNodes
+    .reduce((m, c) => {
+        if (!m.has(c.branch)) m.set(c.branch, m.size);
+        return m;
+    }, new Map());
 
 const renderGitGraph = (() => {
     const root = document.getElementById('git-graph');
@@ -142,18 +170,12 @@ const renderGitGraph = (() => {
 
     const commitNodes = readInCommitNodes(container);
 
-    const branchIndex = commitNodes
-        .reduce((m, c) => {
-            if (!m.has(c.branch)) m.set(c.branch, m.size);
-            return m;
-        }, new Map());
-
-    const height = Math.max(240, (commitNodes.length) * SPACING_Y);
+    const height = Math.max(240, (commitNodes.length) * VERTICAL_Y_COMMIT_SPACING);
     container.style.minHeight = height + 'px';
     svg.setAttribute('width', container.clientWidth);
     svg.setAttribute('height', container.clientHeight);
 
-    drawNodes(commitNodes, calculateNodePositions(commitNodes, branchIndex), svg);
+    drawNodes(commitNodes, calculateNodePositions(commitNodes, generateBranchIndex(commitNodes)), svg);
     ensureCommitsOnTop(commitNodes);
 });
 
