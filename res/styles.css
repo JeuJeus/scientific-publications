@@ -271,7 +271,7 @@ span.cmV2ZXJzZQ.cGhvbmUK:after {
     margin-top: 2px;
 }
 
-.git-graph .commit .commit-message .commit-message-wrapper .commit-message-short {
+.git-graph .commit .commit-message .commit-message-wrapper .commit-important{
     font-weight: bold;
 }
 
