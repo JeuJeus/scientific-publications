@@ -254,7 +254,7 @@ span.cmV2ZXJzZQ.cGhvbmUK:after {
 
 .git-graph .commit .commit-message {
     position: absolute;
-    margin-left: 6.5em;
+    margin-left: 10em;
     color: #222;
     font-size: 0.95rem;
     line-height: 1.2;
@@ -317,5 +317,8 @@ span.cmV2ZXJzZQ.cGhvbmUK:after {
     .git-graph .commit .commit-message {
         max-width: 220px;
         font-size: small;
+    }
+    .git-graph .commit .commit-message {
+        margin-left: 8em;
     }
 }

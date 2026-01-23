@@ -13,9 +13,21 @@ const defineBranchColorsAsCssVariables = () => {
         );
 };
 
-const VERTICAL_Y_COMMIT_SPACING = 65;
-const HORIZONTAL_LANE_GAP = 30;
 const GRAPH_CONTAINER_LEFT_PADDING = 2;
+const config = () => {
+    switch (true) {
+        case window.innerWidth <= 720:
+            return {
+                VERTICAL_Y_COMMIT_SPACING: 80,
+                HORIZONTAL_LANE_GAP: 30,
+            };
+        default:
+            return {
+                VERTICAL_Y_COMMIT_SPACING: 70,
+                HORIZONTAL_LANE_GAP: 50,
+            };
+    }
+};
 
 const parseParentsRawToArray = parentsRaw => parentsRaw
     .split(',')
@@ -74,7 +86,7 @@ const calculateKinkedPath = (fromNode, fromPosition, toNode, toPosition) => {
     return `M ${fromPosition.x} ${fromPosition.y} L ${middleOfX} ${middleOfY} L ${toPosition.x} ${toPosition.y}`;
 };
 
-const drawLinkAsPath = (fromNode, fromPosition, toNode, toPosition, color ) => {
+const drawLinkAsPath = (fromNode, fromPosition, toNode, toPosition, color) => {
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
     Object.entries({
@@ -91,32 +103,32 @@ const drawLinkAsPath = (fromNode, fromPosition, toNode, toPosition, color ) => {
     return path;
 };
 
-const drawLinkToChildNodes = (commitNodes, childNode, idPosition, svg, childPosition) => parentId => {
+const drawLinkToChildNodes = (commitNodes, childNode, idPosition, canvas, childPosition) => parentId => {
     const parentNode = commitNodes.find(node => node.id === parentId);
     const color = getLinkColor(childNode, parentNode);
 
     const parentPosition = idPosition.get(parentId);
     if (!parentPosition) return;
 
-    svg.appendChild(drawLinkAsPath(childNode, childPosition, parentNode, parentPosition, color));
+    canvas.appendChild(drawLinkAsPath(childNode, childPosition, parentNode, parentPosition, color));
 };
 
-const drawNodes = (commitNodes, idPosition, svg) =>
+const drawNodes = (commitNodes, idPosition, canvas) =>
     commitNodes.forEach(childNode => {
 
         const childPosition = idPosition.get(childNode.id);
         if (!childPosition || childNode.parents.length === 0) return;
 
         childNode.parents
-            .forEach(drawLinkToChildNodes(commitNodes, childNode, idPosition, svg, childPosition));
+            .forEach(drawLinkToChildNodes(commitNodes, childNode, idPosition, canvas, childPosition));
     });
 
 const ensureCommitsOnTop = commitNodes => commitNodes.forEach(commitNode => commitNode.element.style.zIndex = 2);
 
 const generateCommitCoordinates = (branchIndex, commitNode, commitNodes, idx) => {
     const lane = branchIndex.get(commitNode.branch);
-    const x = GRAPH_CONTAINER_LEFT_PADDING + lane * HORIZONTAL_LANE_GAP;
-    const y = VERTICAL_Y_COMMIT_SPACING / 2 + (commitNodes.length - 1 - idx) * VERTICAL_Y_COMMIT_SPACING;
+    const x = GRAPH_CONTAINER_LEFT_PADDING + lane * config().HORIZONTAL_LANE_GAP;
+    const y = config().VERTICAL_Y_COMMIT_SPACING / 2 + (commitNodes.length - 1 - idx) * config().VERTICAL_Y_COMMIT_SPACING;
     return {x, y};
 };
 
@@ -138,7 +150,6 @@ const updateCommitElement = (commitNode, {x, y}) => {
         message.style.top = `${y - 9}px`;
 
         if (commitMeta) {
-            console.log(commitMeta)
             commitMeta.style.background = backgroundColor;
             commitMeta.style.color = backgroundColor;
         }
@@ -160,24 +171,54 @@ const generateBranchIndex = commitNodes => commitNodes
         return m;
     }, new Map());
 
-const renderGitGraph = (() => {
-    const root = document.getElementById('git-graph');
-    if (!root) return;
+const renderCommitNodes = (container, canvas) => {
+    const commitNodes = readInCommitNodes(container);
 
+    const height = Math.max(240, (commitNodes.length) * config().VERTICAL_Y_COMMIT_SPACING);
+    container.style.minHeight = height + 'px';
+    canvas.setAttribute('width', container.clientWidth);
+    canvas.setAttribute('height', container.clientHeight);
+
+    drawNodes(commitNodes, calculateNodePositions(commitNodes, generateBranchIndex(commitNodes)), canvas);
+    ensureCommitsOnTop(commitNodes);
+};
+
+const getContainerAndCanvas = () => {
     const container = document.getElementById('graph-container');
-    const svg = document.getElementById('graph-canvas');
+    const canvas = document.getElementById('graph-canvas');
+    return {container, canvas};
+};
+
+const renderGitGraph = (() => {
+    const {container, canvas} = getContainerAndCanvas();
 
     defineBranchColorsAsCssVariables();
 
-    const commitNodes = readInCommitNodes(container);
-
-    const height = Math.max(240, (commitNodes.length) * VERTICAL_Y_COMMIT_SPACING);
-    container.style.minHeight = height + 'px';
-    svg.setAttribute('width', container.clientWidth);
-    svg.setAttribute('height', container.clientHeight);
-
-    drawNodes(commitNodes, calculateNodePositions(commitNodes, generateBranchIndex(commitNodes)), svg);
-    ensureCommitsOnTop(commitNodes);
+    renderCommitNodes(container, canvas);
 });
+
+const debounce = (fn, delay) => {
+    let timeoutId;
+
+    return (...args) => {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(() => {
+            fn(...args);
+        }, delay);
+    };
+};
+
+const rerenderGraph = () => {
+    const {container, canvas} = getContainerAndCanvas();
+
+    canvas.innerHTML = '';
+
+    renderCommitNodes(container, canvas);
+};
+
+const handledResize = debounce(rerenderGraph, 50);
+window.addEventListener('resize', handledResize);
 
 document.addEventListener("DOMContentLoaded", () => renderGitGraph());
