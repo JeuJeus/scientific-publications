@@ -1,26 +1,37 @@
 :root {
     --accent-color: #006699;
     --accent-color-dark: #004c73;
+    --accent-color-really-light: aliceblue;
+
+    --color-white: #fff;
     --color-heading: #333;
-    --color-text-muted: #555;
-    --color-text-footer: #666;
+
     --color-border-light: #eee;
     --color-border-strong: #ccc;
+    --color-border-somewhat-light: #ddd;
+
+    --color-text-primary: #222;
+    --color-text-secondary: #444;
+    --color-text-muted: #555;
+    --color-text-footer: #666;
+    --color-status-label: #777;
+    --color-pending-text: #999;
+
+    --color-meta-bg: #c9e7ff;
+    --color-pending-card: #fafafa;
 
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", "Noto Sans Mono", "Oxygen Mono", "Courier New", monospace;
+
     --page-max-width: 960px;
     --spacing-standard: 20px;
 
     --graph-spacing: 12px;
     --graph-radius: 6px;
     --commit-dot-size: 14px;
-    --color-text-primary: #222;
-    --color-text-secondary: #444;
-    --color-meta-bg: #c9e7ff;
 }
 
 html, body {
-    font-family: var(--font-mono);
+    font-family: var(--font-mono), monospace;
     line-height: 1.6;
     margin: 0 auto;
     max-width: var(--page-max-width);
@@ -69,9 +80,16 @@ h2 {
 
 .publication-list li {
     margin-bottom: 15px;
-    background: aliceblue;
+    background: var(--accent-color-really-light);
     border-radius: 5px;
     padding: 1em;
+}
+
+.publication-card {
+    border: none;
+    border-left: 6px solid var(--accent-color);
+    outline: 1px solid rgba(0, 0, 0, 0.05);
+    outline-offset: -1px;
 }
 
 .publication-title {
@@ -101,7 +119,6 @@ h2 {
 .author.me {
     color: var(--color-text-primary);
     font-weight: 600;
-    text-decoration: underline decoration-thickness(2px) var(--accent-color);
 }
 
 .publication-links {
@@ -123,14 +140,14 @@ h2 {
     border: 1px solid var(--accent-color);
 }
 
-.button-publication.doi,.pdf {
+.button-publication.doi, .pdf {
     background: var(--accent-color);
-    color: #fff;
+    color: var(--color-white);
 }
 
-.button-publication.doi:hover,.pdf:hover {
+.button-publication.doi:hover, .pdf:hover {
     background: var(--accent-color-dark);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     transform: translateY(-1px);
 }
 
@@ -140,10 +157,55 @@ h2 {
 }
 
 @media (max-width: 720px) {
+    .publication-links a {
+        width: 50%;
+    }
+}
 
-   .publication-links a {
-       width: 50%;
-   }
+.publication-card.pending {
+    background: var(--color-pending-card);
+    border-left-color: var(--color-border-somewhat-light);
+    border-left-style: dashed;
+    position: relative;
+    overflow: hidden;
+}
+
+.publication-card.pending::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0) 0,
+            rgba(255, 255, 255, 0.5) 50%,
+            rgba(255, 255, 255, 0) 100%
+    );
+}
+
+.skeleton-text {
+    color: var(--color-pending-text);
+    font-style: italic;
+}
+
+.status-label {
+    background: var(--color-border-light);
+    color: var(--color-status-label);
+    border: 1px dashed var(--color-border-strong);
+    cursor: default;
+    pointer-events: none;
+}
+
+.publication-card.pending .author.me {
+    text-decoration: none;
+    color: var(--color-pending-text);
+}
+
+.publication-card.pending .publication-links {
+    margin-top: 1em;
 }
 
 footer {
@@ -214,7 +276,7 @@ footer {
 }
 
 .accent-color {
-    font-family: var(--font-mono);
+    font-family: var(--font-mono), monospace;
     font-variant-ligatures: none;
     font-feature-settings: "liga" 0;
     color: var(--accent-color);
@@ -303,7 +365,7 @@ footer {
     height: var(--commit-dot-size);
     flex: 0 0 var(--commit-dot-size);
     border-radius: 50%;
-    border: 2px solid #fff;
+    border: 2px solid var(--color-white);
     box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04) inset, 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
@@ -353,13 +415,13 @@ footer {
 }
 
 .git-graph .commit .commit-meta .commit-year-tag {
-    color: #fff;
+    color: var(--color-white);
 }
 
 .git-graph .graph-note {
     margin-top: 10px;
     font-size: 0.8rem;
-    color: #555;
+    color: var(--color-text-muted);
 }
 
 @media (max-width: 720px) {
