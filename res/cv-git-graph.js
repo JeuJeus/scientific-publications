@@ -224,7 +224,7 @@ const rerenderGraph = () => {
     renderCommitNodes(container, canvas);
 };
 
-const handledResize = debounce(rerenderGraph, 50);
+const handledResize = debounce(rerenderGraph, 25);
 window.addEventListener('resize', handledResize);
 
 document.addEventListener("DOMContentLoaded", () => renderGitGraph());

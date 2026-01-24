@@ -1,13 +1,29 @@
 :root {
     --accent-color: #006699;
+    --color-heading: #333;
+    --color-text-muted: #555;
+    --color-text-footer: #666;
+    --color-border-light: #eee;
+    --color-border-strong: #ccc;
+
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", "Noto Sans Mono", "Oxygen Mono", "Courier New", monospace;
+    --page-max-width: 960px;
+    --spacing-standard: 20px;
+
+    --graph-spacing: 12px;
+    --graph-radius: 6px;
+    --commit-dot-size: 14px;
+    --color-text-primary: #222;
+    --color-text-secondary: #444;
+    --color-meta-bg: #c9e7ff;
 }
 
 html, body {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", "Oxygen Mono", "Courier New", monospace;
+    font-family: var(--font-mono);
     line-height: 1.6;
     margin: 0 auto;
-    max-width: 960px;
-    padding: 20px;
+    max-width: var(--page-max-width);
+    padding: var(--spacing-standard);
 }
 
 input, textarea, select, button, code, pre, kbd, samp {
@@ -16,8 +32,8 @@ input, textarea, select, button, code, pre, kbd, samp {
 
 header {
     text-align: center;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #ccc;
+    padding-bottom: var(--spacing-standard);
+    border-bottom: 2px solid var(--color-border-strong);
 }
 
 nav a {
@@ -31,12 +47,18 @@ a {
 }
 
 section {
-    padding: 20px 0;
-    border-bottom: 1px solid #eee;
+    padding: var(--spacing-standard) 0;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+h1 {
+    font-size: clamp(1.25rem, 3.5vw, 2.2rem);
+    line-height: 1.15;
+    margin: 0.25em 0;
 }
 
 h2 {
-    color: #333;
+    color: var(--color-heading);
 }
 
 .publication-list {
@@ -50,16 +72,16 @@ h2 {
 
 footer {
     text-align: center;
-    padding-top: 20px;
-    color: #666;
+    padding-top: var(--spacing-standard);
+    color: var(--color-text-footer);
     font-size: 0.9em;
 }
+
+/* ABOUT ME SECTION */
 
 .about-me-wrapper {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
-    align-content: flex-start;
     justify-content: center;
     align-items: flex-start;
     gap: 1.5rem;
@@ -68,15 +90,13 @@ footer {
 .about-me-image-wrapper {
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
-    align-content: center;
     justify-content: center;
     align-items: center;
 }
 
 .about-me-details {
     font-size: x-small;
-    color: #555;
+    color: var(--color-text-muted);
     text-align: left;
 }
 
@@ -96,7 +116,30 @@ footer {
     display: block;
 }
 
+/* UTILITIES */
+
+.terminal-prompt {
+    display: inline-block;
+    animation: terminalPromptBlink 2s steps(2, start) infinite;
+    line-height: 1;
+}
+
+@keyframes terminalPromptBlink {
+    0%, 100% { visibility: visible; }
+    50% { visibility: hidden; }
+}
+
+.accent-color {
+    font-family: var(--font-mono);
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0;
+    color: var(--accent-color);
+}
+
+/* MEDIA QUERIES */
+
 @media (max-width: 720px) {
+
     .about-me-wrapper {
         flex-direction: column;
         align-items: center;
@@ -109,6 +152,13 @@ footer {
         height: 240px;
         flex: 0 0 240px;
     }
+
+    h1 {
+        font-size: 1rem;
+        line-height: 1.1;
+        word-break: normal;
+        hyphens: auto;
+    }
 }
 
 @media (min-width: 1400px) {
@@ -119,43 +169,120 @@ footer {
     }
 }
 
-.terminal-prompt {
-    display: inline-block;
-    animation: terminalPromptBlink 2s steps(2, start) infinite;
-    line-height: 1;
+/* GIT GRAPH */
+.git-graph {
+    margin-top: 1rem;
+    padding: var(--graph-spacing);
+    border-radius: var(--graph-radius);
 }
 
-@keyframes terminalPromptBlink {
-    0% {
-        visibility: visible;
-    }
-    50% {
-        visibility: hidden;
-    }
-    100% {
-        visibility: visible;
-    }
+.git-graph .graph-container {
+    position: relative;
+    width: 100%;
+    padding: var(--graph-spacing);
 }
 
-.accent-color {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", "Noto Sans Mono", monospace;
-    font-variant-ligatures: none;
-    font-feature-settings: "liga" 0;
-    color: var(--accent-color);
+.git-graph .graph-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
 }
 
-h1 {
-    font-size: clamp(1.25rem, 3.5vw, 2.2rem);
-    line-height: 1.15;
-    margin: 0.25em 0;
+.git-graph .lane-labels {
+    position: absolute;
+    right: var(--graph-spacing);
+    bottom: var(--graph-spacing);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+    font-size: x-small;
+    color: var(--color-text-secondary);
+}
+
+.git-graph .commit {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: var(--graph-spacing);
+    left: 0;
+    top: 0;
+    transform: translateY(-50%);
+    cursor: default;
+    width: 100%;
+}
+
+.git-graph .commit .commit-dot {
+    position: absolute;
+    width: var(--commit-dot-size);
+    height: var(--commit-dot-size);
+    flex: 0 0 var(--commit-dot-size);
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04) inset, 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.git-graph .commit .commit-message {
+    position: absolute;
+    margin-left: 10em;
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    line-height: 1.2;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+}
+
+.git-graph .commit .commit-message .commit-message-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    margin-top: 2px;
+}
+
+.git-graph .commit .commit-message .commit-message-wrapper .commit-important {
+    font-weight: bold;
+}
+
+.git-graph .commit .commit-meta {
+    font-size: 0.75rem;
+    color: var(--color-meta-bg);
+    margin-right: 1em;
+    padding: 4px 2px 2px 2px;
+    background: var(--color-meta-bg);
+    text-decoration: none;
+    border-radius: 0 4px 4px 0;
+}
+
+.git-graph .commit .commit-meta:before {
+    content: "";
+    float: left;
+    position: absolute;
+    top: 0;
+    left: -10px;
+    width: 0;
+    height: 0;
+    border-color: transparent currentColor transparent transparent;
+    border-style: solid;
+    border-width: 10px 10px 10px 0;
+}
+
+.git-graph .commit .commit-meta .commit-year-tag {
+    color: #fff;
+}
+
+.git-graph .graph-note {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: #555;
 }
 
 @media (max-width: 720px) {
-    h1 {
-        font-size: 1rem;
-        line-height: 1.1;
-        word-break: normal;
-        hyphens: auto;
+    .git-graph .commit .commit-message {
+        max-width: 220px;
+        font-size: small;
+        margin-left: 8em;
     }
 }
 
@@ -195,130 +322,4 @@ span.cmV2ZXJzZQ.cGhvbmUK:before {
 
 span.cmV2ZXJzZQ.cGhvbmUK:after {
     content: "751 94+"
-}
-
-/* GIT GRAPH */
-.git-graph {
-    margin-top: 1rem;
-    padding: 12px;
-    border-radius: 6px;
-}
-
-.git-graph .graph-container {
-    position: relative;
-    width: 100%;
-    padding: 12px;
-}
-
-.git-graph .graph-canvas {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.git-graph .lane-labels {
-    position: absolute;
-    right: 12px;
-    bottom: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    align-items: flex-end;
-    font-size: x-small;
-    color: #444;
-}
-
-.git-graph .commit {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    left: 0;
-    top: 0;
-    transform: translateY(-50%);
-    cursor: default;
-    width: 100%;
-}
-
-.git-graph .commit .commit-dot {
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04) inset, 0 1px 2px rgba(0, 0, 0, 0.08);
-    flex: 0 0 14px;
-}
-
-.git-graph .commit .commit-message {
-    position: absolute;
-    margin-left: 10em;
-    color: #222;
-    font-size: 0.95rem;
-    line-height: 1.2;
-    display: flex;
-    flex-wrap: nowrap;
-    align-content: flex-start;
-    align-items: flex-start;
-}
-
-.git-graph .commit .commit-message .commit-message-wrapper {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    margin-top: 2px;
-}
-
-.git-graph .commit .commit-message .commit-message-wrapper .commit-important{
-    font-weight: bold;
-}
-
-.git-graph .commit .commit-meta {
-    font-size: 0.75rem;
-    color: #c9e7ff;
-    margin-right: 1em;
-    padding: 4px 2px 2px 2px;
-    background: #c9e7ff;
-    text-decoration: none;
-    -moz-border-radius-bottomright: 4px;
-    -webkit-border-bottom-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    -moz-border-radius-topright: 4px;
-    -webkit-border-top-right-radius: 4px;
-    border-top-right-radius: 4px;
-}
-
-.git-graph .commit .commit-meta:before {
-    content: "";
-    float: left;
-    position: absolute;
-    top: 0;
-    left: -10px;
-    width: 0;
-    height: 0;
-    border-color: transparent currentColor transparent transparent;
-    border-style: solid;
-    border-width: 10px 10px 10px 0;
-}
-
-.git-graph .commit .commit-meta .commit-year-tag {
-    color: #fff;
-}
-
-.git-graph .graph-note {
-    margin-top: 10px;
-    font-size: 0.8rem;
-    color: #555;
-}
-
-@media (max-width: 720px) {
-    .git-graph .commit .commit-message {
-        max-width: 220px;
-        font-size: small;
-    }
-    .git-graph .commit .commit-message {
-        margin-left: 8em;
-    }
 }
