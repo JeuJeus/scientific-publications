@@ -7,6 +7,7 @@ const BRANCH_COLORS = {
 
 const defineBranchColorsAsCssVariables = () => {
     const documentRoot = document.documentElement;
+
     Object.entries(BRANCH_COLORS)
         .forEach(([name, column]) =>
             documentRoot.style.setProperty(`--branch-${name}`, column)
@@ -15,18 +16,13 @@ const defineBranchColorsAsCssVariables = () => {
 
 const GRAPH_CONTAINER_LEFT_PADDING = 2;
 const config = () => {
-    switch (true) {
-        case window.innerWidth <= 720:
-            return {
-                VERTICAL_Y_COMMIT_SPACING: 80,
-                HORIZONTAL_LANE_GAP: 30,
-            };
-        default:
-            return {
-                VERTICAL_Y_COMMIT_SPACING: 70,
-                HORIZONTAL_LANE_GAP: 50,
-            };
-    }
+    return window.innerWidth <= 720 ? {
+        VERTICAL_Y_COMMIT_SPACING: 80,
+        HORIZONTAL_LANE_GAP: 30,
+    } : {
+        VERTICAL_Y_COMMIT_SPACING: 70,
+        HORIZONTAL_LANE_GAP: 50,
+    };
 };
 
 const parseParentsRawToArray = parentsRaw => parentsRaw
@@ -65,9 +61,8 @@ const getLinkColor = (childNode, parentNode) => {
         return BRANCH_COLORS[parentNode.branch];
     } else if (childNode.branch !== MAIN_BRANCH) {
         return BRANCH_COLORS[childNode.branch];
-    } else {
-        return BRANCH_COLORS[MAIN_BRANCH];
     }
+    return BRANCH_COLORS[MAIN_BRANCH];
 };
 
 const calculateKinkedPath = (fromNode, fromPosition, toNode, toPosition) => {
@@ -86,18 +81,20 @@ const calculateKinkedPath = (fromNode, fromPosition, toNode, toPosition) => {
     return `M ${fromPosition.x} ${fromPosition.y} L ${middleOfX} ${middleOfY} L ${toPosition.x} ${toPosition.y}`;
 };
 
+const getCommitConnectionLine = (fromNode, fromPosition, toNode, toPosition, color) => ({
+    'd': calculateKinkedPath(fromNode, fromPosition, toNode, toPosition,),
+    'stroke': color,
+    'stroke-width': '3',
+    'fill': 'none',
+    'stroke-linecap': 'round',
+    'stroke-linejoin': 'round',
+    'opacity': '0.95'
+});
+
 const drawLinkAsPath = (fromNode, fromPosition, toNode, toPosition, color) => {
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
-    Object.entries({
-        'd': calculateKinkedPath(fromNode, fromPosition, toNode, toPosition,),
-        'stroke': color,
-        'stroke-width': '3',
-        'fill': 'none',
-        'stroke-linecap': 'round',
-        'stroke-linejoin': 'round',
-        'opacity': '0.95'
-    })
+    Object.entries(getCommitConnectionLine(fromNode, fromPosition, toNode, toPosition, color))
         .forEach(([key, val]) => path.setAttribute(key, val));
 
     return path;
@@ -113,15 +110,15 @@ const drawLinkToChildNodes = (commitNodes, childNode, idPosition, canvas, childP
     canvas.appendChild(drawLinkAsPath(childNode, childPosition, parentNode, parentPosition, color));
 };
 
-const drawNodes = (commitNodes, idPosition, canvas) =>
-    commitNodes.forEach(childNode => {
+const drawNode = (idPosition, childNode, commitNodes, canvas) => {
+    const childPosition = idPosition.get(childNode.id);
+    if (!childPosition || childNode.parents.length === 0) return;
 
-        const childPosition = idPosition.get(childNode.id);
-        if (!childPosition || childNode.parents.length === 0) return;
+    childNode.parents
+        .forEach(drawLinkToChildNodes(commitNodes, childNode, idPosition, canvas, childPosition));
+};
 
-        childNode.parents
-            .forEach(drawLinkToChildNodes(commitNodes, childNode, idPosition, canvas, childPosition));
-    });
+const drawNodes = (commitNodes, idPosition, canvas) => commitNodes.forEach(childNode => drawNode(idPosition, childNode, commitNodes, canvas));
 
 const ensureCommitsOnTop = commitNodes => commitNodes.forEach(commitNode => commitNode.element.style.zIndex = 2);
 
@@ -157,29 +154,38 @@ const updateCommitElement = (commitNode, {x, y}) => {
 };
 
 const calculateNodePositions = (commitNodes, branchIndex) =>
-    new Map(
-        commitNodes.map((commitNode, idx) => {
-            const coords = generateCommitCoordinates(branchIndex, commitNode, commitNodes, idx);
-            updateCommitElement(commitNode, coords);
-            return [commitNode.id, coords];
-        })
-    );
+    new Map(commitNodes.map((commitNode, idx) => {
+        const coords = generateCommitCoordinates(branchIndex, commitNode, commitNodes, idx);
+        return [commitNode.id, coords];
+    }));
 
-const generateBranchIndex = commitNodes => commitNodes
-    .reduce((m, c) => {
-        if (!m.has(c.branch)) m.set(c.branch, m.size);
-        return m;
-    }, new Map());
+const generateBranchIndex = commitNodes =>
+    commitNodes
+        .reduce((m, c) => {
+            if (!m.has(c.branch)) m.set(c.branch, m.size);
+            return m;
+        }, new Map());
+
 
 const renderCommitNodes = (container, canvas) => {
     const commitNodes = readInCommitNodes(container);
 
+    const branchIndex = generateBranchIndex(commitNodes);
+    const idPosition = calculateNodePositions(commitNodes, branchIndex);
+
     const height = Math.max(240, (commitNodes.length) * config().VERTICAL_Y_COMMIT_SPACING);
+
     container.style.minHeight = height + 'px';
     canvas.setAttribute('width', container.clientWidth);
     canvas.setAttribute('height', container.clientHeight);
 
-    drawNodes(commitNodes, calculateNodePositions(commitNodes, generateBranchIndex(commitNodes)), canvas);
+    commitNodes.forEach(node => {
+        const coords = idPosition.get(node.id);
+        if (coords) updateCommitElement(node, coords);
+    });
+
+    drawNodes(commitNodes, idPosition, canvas);
+
     ensureCommitsOnTop(commitNodes);
 };
 
