@@ -68,6 +68,9 @@ h2 {
 
 .publication-list li {
     margin-bottom: 15px;
+    background: aliceblue;
+    border-radius: 5px;
+    padding: 1em;
 }
 
 footer {
@@ -108,6 +111,10 @@ footer {
     text-align: left;
 }
 
+.about-me-text p:first-of-type {
+    margin-top: 0;
+}
+
 #qr-code-me {
     width: 200px;
     height: 200px;
@@ -125,8 +132,12 @@ footer {
 }
 
 @keyframes terminalPromptBlink {
-    0%, 100% { visibility: visible; }
-    50% { visibility: hidden; }
+    0%, 100% {
+        visibility: visible;
+    }
+    50% {
+        visibility: hidden;
+    }
 }
 
 .accent-color {
