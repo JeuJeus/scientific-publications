@@ -1,5 +1,6 @@
 :root {
     --accent-color: #006699;
+    --accent-color-dark: #004c73;
     --color-heading: #333;
     --color-text-muted: #555;
     --color-text-footer: #666;
@@ -71,6 +72,78 @@ h2 {
     background: aliceblue;
     border-radius: 5px;
     padding: 1em;
+}
+
+.publication-title {
+    font-weight: bold;
+}
+
+.publication-authors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 12px;
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+}
+
+.author {
+    position: relative;
+}
+
+.author:not(:last-child)::after {
+    content: ", ";
+    position: absolute;
+    right: -8px;
+    color: var(--color-text-primary);
+}
+
+.author.me {
+    color: var(--color-text-primary);
+    font-weight: 600;
+    text-decoration: underline decoration-thickness(2px) var(--accent-color);
+}
+
+.publication-links {
+    display: flex;
+    gap: 10px;
+    margin-top: 1.25rem;
+}
+
+.button-publication {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    border: 1px solid var(--accent-color);
+}
+
+.button-publication.doi,.pdf {
+    background: var(--accent-color);
+    color: #fff;
+}
+
+.button-publication.doi:hover,.pdf:hover {
+    background: var(--accent-color-dark);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    transform: translateY(-1px);
+}
+
+.venue-meta {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+@media (max-width: 720px) {
+
+   .publication-links a {
+       width: 50%;
+   }
 }
 
 footer {
