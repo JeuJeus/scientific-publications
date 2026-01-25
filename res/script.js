@@ -4,4 +4,4 @@ const insertCurrentYear = () => document
     .querySelectorAll('.current-year')
     .forEach(node => node.textContent = currentYear());
 
-document.addEventListener("DOMContentLoaded", () => insertCurrentYear())
+document.addEventListener("DOMContentLoaded", () => insertCurrentYear());

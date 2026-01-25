@@ -4,6 +4,7 @@ const BRANCH_COLORS = {
     'work': '#3385ad',
     'academic': '#66a3c2',
 };
+const FALLBACK_COLOR = '#999';
 
 const defineBranchColorsAsCssVariables = () => {
     const documentRoot = document.documentElement;
@@ -56,7 +57,7 @@ const readInCommitNodes = container =>
         .sort((a, b) => (a.order - b.order));
 
 const getLinkColor = (childNode, parentNode) => {
-    if (!parentNode) return '#999';
+    if (!parentNode) return FALLBACK_COLOR;
     if (parentNode.branch !== MAIN_BRANCH) {
         return BRANCH_COLORS[parentNode.branch];
     } else if (childNode.branch !== MAIN_BRANCH) {
@@ -135,7 +136,7 @@ const updateCommitElement = (commitNode, {x, y}) => {
 
     const commitMeta = message.querySelector('.commit-meta');
 
-    const backgroundColor = BRANCH_COLORS[commitNode.branch] || '#999';
+    const backgroundColor = BRANCH_COLORS[commitNode.branch] || FALLBACK_COLOR;
 
     if (dot) {
         if (!dot.style.background) dot.style.background = backgroundColor;
