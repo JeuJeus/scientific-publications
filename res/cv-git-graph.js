@@ -90,8 +90,8 @@ const readInCommitNodes = container => {
         .sort((a, b) => (a.order - b.order));
 };
 
-const getLinkColor = (child, parent, isDotted) => {
-    if (isDotted) return FALLBACK_COLOR;
+const getLinkColor = (child, parent, isDotted, isFuture) => {
+    if (isDotted && !isFuture) return FALLBACK_COLOR;
     const getBranchColor = (branch) => BRANCH_COLORS[branch] || FALLBACK_COLOR;
     const candidates = [parent?.branch, child?.branch, MAIN_BRANCH];
     const activeBranch = candidates.find(b => b && b !== MAIN_BRANCH) || MAIN_BRANCH;
@@ -113,7 +113,7 @@ const calculateKinkedPath = (fromNode, fromPosition, toNode, toPosition) => {
 
 const getLinkOpacity = isDotted => isDotted ? '0.4' : '0.95';
 
-const drawLinkAsPath = (childNode, childPos, parentNode, parentPos, isDotted = false) => {
+const drawLinkAsPath = (childNode, childPos, parentNode, parentPos, isDotted = false, isFuture = false) => {
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
     const d = isDotted
@@ -121,7 +121,7 @@ const drawLinkAsPath = (childNode, childPos, parentNode, parentPos, isDotted = f
         : calculateKinkedPath(childNode, childPos, parentNode, parentPos);
 
     path.setAttribute('d', d);
-    path.setAttribute('stroke', getLinkColor(childNode, parentNode, isDotted));
+    path.setAttribute('stroke', getLinkColor(childNode, parentNode, isDotted, isFuture));
     path.setAttribute('stroke-width', '3');
     path.setAttribute('fill', 'none');
     path.setAttribute('stroke-linecap', 'round');
@@ -149,7 +149,7 @@ const drawUpwardDottedLink = (childPos, canvas, childNode) => {
         x: childPos.x,
         y: childPos.y - (config().VERTICAL_Y_COMMIT_SPACING * 0.7)
     };
-    canvas.appendChild(drawLinkAsPath(childNode, childPos, childNode, virtualUpwardPos, true));
+    canvas.appendChild(drawLinkAsPath(childNode, childPos, childNode, virtualUpwardPos, true, true));
 };
 
 const drawDownwardDottedLink = (childNode, idPosition, allElements, childPos, canvas) => {
@@ -163,7 +163,7 @@ const drawDownwardDottedLink = (childNode, idPosition, allElements, childPos, ca
         x: childPos.x,
         y: childPos.y + (config().VERTICAL_Y_COMMIT_SPACING * 0.7)
     };
-    canvas.appendChild(drawLinkAsPath(childNode, childPos, mapCommitElement(hiddenEl), virtualPos, true));
+    canvas.appendChild(drawLinkAsPath(childNode, childPos, mapCommitElement(hiddenEl), virtualPos, true, false));
 };
 
 const drawNode = (idPosition, childNode, commitNodes, canvas, allElements) => {
