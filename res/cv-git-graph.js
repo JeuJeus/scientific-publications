@@ -116,24 +116,52 @@ const drawLinkAsPath = (childNode, childPos, parentNode, parentPos, isDotted = f
 
 const isConnectionVisible = p => p.pos && p.node;
 
+const isTopOfBranch = (commitNodes, childNode) => !commitNodes.some(other =>
+    other.branch === childNode.branch && other.order > childNode.order
+);
+
+const childNodeIsLowerThanGlobalMax = (childNode, maxGlobalOrder) => childNode.order < maxGlobalOrder;
+
+const getMaxGlobalOrder = commitNodes => Math.max(...commitNodes.map(n => n.order));
+
+const drawUpwardDottedLink = (childPos, canvas, childNode) => {
+    const virtualUpwardPos = {
+        x: childPos.x,
+        y: childPos.y - (config().VERTICAL_Y_COMMIT_SPACING * 0.7)
+    };
+    canvas.appendChild(drawLinkAsPath(childNode, childPos, childNode, virtualUpwardPos, true));
+};
+
+const drawDownwardDottedLink = (childNode, idPosition, allElements, childPos, canvas) => {
+    const firstHiddenParent = childNode.parents
+        .find(id => !idPosition.has(id) && allElements.some(el => el.dataset.id === id));
+
+    if (!firstHiddenParent) return;
+
+    const hiddenEl = allElements.find(el => el.dataset.id === firstHiddenParent);
+    const virtualPos = {
+        x: childPos.x,
+        y: childPos.y + (config().VERTICAL_Y_COMMIT_SPACING * 0.7)
+    };
+    canvas.appendChild(drawLinkAsPath(childNode, childPos, mapCommitElement(hiddenEl), virtualPos, true));
+};
+
 const drawNode = (idPosition, childNode, commitNodes, canvas, allElements) => {
     const childPos = idPosition.get(childNode.id);
     if (!childPos) return;
 
     childNode.parents
-        .map(id => ({ id, pos: idPosition.get(id), node: commitNodes.find(n => n.id === id) }))
+        .map(id => ({id, pos: idPosition.get(id), node: commitNodes.find(n => n.id === id)}))
         .filter(p => isConnectionVisible(p))
         .forEach(p => canvas.appendChild(drawLinkAsPath(childNode, childPos, p.node, p.pos)));
 
     if (!isGraphExpanded) {
-        const firstHiddenParent = childNode.parents
-            .find(id => !idPosition.has(id) && allElements.some(el => el.dataset.id === id));
+        drawDownwardDottedLink(childNode, idPosition, allElements, childPos, canvas);
+    }
 
-        if (!firstHiddenParent) return;
-
-        const hiddenEl = allElements.find(el => el.dataset.id === firstHiddenParent);
-        const virtualPos = {x: childPos.x, y: childPos.y + (config().VERTICAL_Y_COMMIT_SPACING * 0.7)};
-        canvas.appendChild(drawLinkAsPath(childNode, childPos, mapCommitElement(hiddenEl), virtualPos, true));
+    const maxGlobalOrder = getMaxGlobalOrder(commitNodes);
+    if (isTopOfBranch(commitNodes, childNode) && childNodeIsLowerThanGlobalMax(childNode, maxGlobalOrder)) {
+        drawUpwardDottedLink(childPos, canvas, childNode);
     }
 };
 
@@ -197,7 +225,7 @@ const renderCommitNodes = (container, canvas) => {
     container.style.minHeight = totalHeight + 'px';
     container.style.position = 'relative';
 
-    canvas.setAttribute(    'width', container.clientWidth);
+    canvas.setAttribute('width', container.clientWidth);
     canvas.setAttribute('height', container.clientHeight);
 
     commitNodes.forEach(node => {
