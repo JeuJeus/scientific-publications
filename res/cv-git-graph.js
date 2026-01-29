@@ -1,55 +1,45 @@
 const BRANCHES = {
-    'life': {
-        color: '#006699',
-        mainBranch: true,
-        branchOrder: 1
-    },
-    'academic': {
-        color: '#66a3c2',
-        mainBranch: false,
-        branchOrder: 2
-    },
-    'work': {
-        color: '#3385ad',
-        mainBranch: false,
-        branchOrder: 3
-    },
+    'life': { color: '#006699', mainBranch: true, branchOrder: 1 },
+    'academic': { color: '#66a3c2', mainBranch: false, branchOrder: 2 },
+    'work': { color: '#3385ad', mainBranch: false, branchOrder: 3 },
 };
 
-const MAIN_BRANCH = Object.keys(BRANCHES)
-    .find(key => BRANCHES[key].mainBranch);
+const getMainBranch = () => Object.keys(BRANCHES).find(key => BRANCHES[key].mainBranch);
 
-const BRANCH_ORDER = Object.keys(BRANCHES)
+const getBranchOrder = () => Object.keys(BRANCHES)
     .sort((a, b) => BRANCHES[a].branchOrder - BRANCHES[b].branchOrder);
 
-const BRANCH_COLORS = Object.fromEntries(
-    Object.entries(BRANCHES).map(([key, val]) => [key, val.color])
+const getBranchColors = branchEntries => Object.fromEntries(
+    branchEntries.map(([key, val]) => [key, val.color])
 );
 
-const FALLBACK_COLOR = '#999';
+const config = () => {
+    const branchEntries = Object.entries(BRANCHES);
 
-const EXPAND_BUTTON_ID = 'git-graph-expand-btn';
+    const isMobile = window.innerWidth <= 720;
+
+    return Object.freeze({
+        MAIN_BRANCH: getMainBranch(),
+        BRANCH_ORDER: getBranchOrder(),
+        BRANCH_COLORS: getBranchColors(branchEntries),
+
+        FALLBACK_COLOR: '#999',
+        EXPAND_BUTTON_ID: 'git-graph-expand-btn',
+        GRAPH_CONTAINER_LEFT_PADDING: 2,
+        BUTTON_HEIGHT_SPACE: 60,
+
+        VERTICAL_Y_COMMIT_SPACING: isMobile ? 80 : 70,
+        HORIZONTAL_LANE_GAP: isMobile ? 30 : 50,
+    });
+};
 
 let isGraphExpanded = false;
 
 const defineBranchColorsAsCssVariables = () => {
     const documentRoot = document.documentElement;
-    Object.entries(BRANCH_COLORS).forEach(([name, column]) =>
+    Object.entries(config().BRANCH_COLORS).forEach(([name, column]) =>
         documentRoot.style.setProperty(`--branch-${name}`, column)
     );
-};
-
-const GRAPH_CONTAINER_LEFT_PADDING = 2;
-const BUTTON_HEIGHT_SPACE = 60;
-
-const config = () => {
-    return window.innerWidth <= 720 ? {
-        VERTICAL_Y_COMMIT_SPACING: 80,
-        HORIZONTAL_LANE_GAP: 30,
-    } : {
-        VERTICAL_Y_COMMIT_SPACING: 70,
-        HORIZONTAL_LANE_GAP: 50,
-    };
 };
 
 const parseParentsRawToArray = parentsRaw => parentsRaw
@@ -91,10 +81,10 @@ const readInCommitNodes = container => {
 };
 
 const getLinkColor = (child, parent, isDotted, isFuture) => {
-    if (isDotted && !isFuture) return FALLBACK_COLOR;
-    const getBranchColor = (branch) => BRANCH_COLORS[branch] || FALLBACK_COLOR;
-    const candidates = [parent?.branch, child?.branch, MAIN_BRANCH];
-    const activeBranch = candidates.find(b => b && b !== MAIN_BRANCH) || MAIN_BRANCH;
+    if (isDotted && !isFuture) return config().FALLBACK_COLOR;
+    const getBranchColor = (branch) => config().BRANCH_COLORS[branch] || config().FALLBACK_COLOR;
+    const candidates = [parent?.branch, child?.branch, config().MAIN_BRANCH];
+    const activeBranch = candidates.find(b => b && b !== config().MAIN_BRANCH) || config().MAIN_BRANCH;
     return getBranchColor(activeBranch);
 };
 
@@ -192,7 +182,7 @@ const drawNodes = (commitNodes, idPosition, canvas, allElements) => {
 const updateCommitElement = (commitNode, {x, y}) => {
     const dot = commitNode.element.querySelector('.commit-dot');
     const message = commitNode.element.querySelector('.commit-message');
-    const backgroundColor = BRANCH_COLORS[commitNode.branch] || FALLBACK_COLOR;
+    const backgroundColor = config().BRANCH_COLORS[commitNode.branch] || config().FALLBACK_COLOR;
 
     if (dot) {
         dot.style.background = backgroundColor;
@@ -209,7 +199,7 @@ const updateCommitElement = (commitNode, {x, y}) => {
     }
 };
 
-const generateBranchIndex = () => new Map(BRANCH_ORDER.map((name, i) => [name, i]));
+const generateBranchIndex = () => new Map(config().BRANCH_ORDER.map((name, i) => [name, i]));
 
 const onGraphExtendButtonClick = () => () => {
     isGraphExpanded = !isGraphExpanded;
@@ -217,10 +207,10 @@ const onGraphExtendButtonClick = () => () => {
 };
 
 const updateExpandButton = (container) => {
-    let expandButton = document.getElementById(EXPAND_BUTTON_ID);
+    let expandButton = document.getElementById(config().EXPAND_BUTTON_ID);
     if (!expandButton) {
         expandButton = document.createElement('div');
-        expandButton.id = EXPAND_BUTTON_ID;
+        expandButton.id = config().EXPAND_BUTTON_ID;
         expandButton.addEventListener('click', onGraphExtendButtonClick());
         container.appendChild(expandButton);
     }
@@ -230,7 +220,7 @@ const updateExpandButton = (container) => {
 const getIdPositions = (commitNodes, branchIndex) =>
     new Map(commitNodes.map((node, idx) => {
         const lane = branchIndex.get(node.branch) ?? 0;
-        const x = GRAPH_CONTAINER_LEFT_PADDING + lane * config().HORIZONTAL_LANE_GAP;
+        const x = config().GRAPH_CONTAINER_LEFT_PADDING + lane * config().HORIZONTAL_LANE_GAP;
         const y = config().VERTICAL_Y_COMMIT_SPACING / 2 + (commitNodes.length - 1 - idx) * config().VERTICAL_Y_COMMIT_SPACING;
         return [node.id, {x, y}];
     }));
@@ -241,7 +231,7 @@ const renderCommitNodes = (container, canvas) => {
     const branchIndex = generateBranchIndex();
     const idPosition = getIdPositions(commitNodes, branchIndex);
 
-    const totalHeight = Math.max(240, (commitNodes.length * config().VERTICAL_Y_COMMIT_SPACING) + BUTTON_HEIGHT_SPACE);
+    const totalHeight = Math.max(240, (commitNodes.length * config().VERTICAL_Y_COMMIT_SPACING) + config().BUTTON_HEIGHT_SPACE);
     container.style.minHeight = totalHeight + 'px';
     container.style.position = 'relative';
 
