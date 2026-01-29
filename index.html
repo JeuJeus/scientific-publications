@@ -13,6 +13,7 @@
 
     <meta name="google-site-verification" content="ZKmGpWpiZjrNy6-GtiJYqSEj_8MGhXr4LZwaw9lzz_M"/>
 
+    <script src="res/svg-custom.js"></script>
     <script src="res/script.js"></script>
     <script src="res/cv-git-graph.js"></script>
 </head>
@@ -37,18 +38,27 @@
         <h2>About Me</h2>
         <div class="about-me-wrapper">
             <div class="about-me-image-wrapper">
-                <img
-                        id="qr-code-me"
-                        src="./res/qr-code-me.svg"
-                        alt="QR Code of my Website with my Face"
-                        loading="lazy"
-                        decoding="async"
-                />
+                <load-svg id="qr-code-me" src="/res/qr-code-me-annotated.svg"
+                           alt="QR Code of my Website with my Face"
+                           loading="lazy"
+                           decoding="async">
+                    <style svgStyles>
+                        svg:hover .me {
+                            fill: var(--accent-color);
+                        }
+                    </style>
+                </load-svg>
                 <details class="about-me-details">
                     <summary>details</summary>
-                    This QR code actually works and encodes a link to this very website!<br>
-                    Shoutout to Russ Cox for <a href="https://research.swtch.com/qart" target="_blank">the
-                    implementation</a>.<br>
+                    <p>
+                        This QR code actually works and encodes a link to this very website!<br>
+                        Shoutout to Russ Cox for <a href="https://research.swtch.com/qart" target="_blank">the
+                        implementation</a>.
+                    </p>
+                    <p>
+                        Also thanks to Danny Engelman for <a href="https://dev.to/dannyengelman/load-file-web-component-add-external-content-to-the-dom-1nd" target="_blank">the custom DOM-element implementation</a>,
+                        enabling the SVG on hover CSS effect, used to highlight my portrait in the QR code.
+                    </p>
                 </details>
             </div>
             <div class="about-me-text">

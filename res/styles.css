@@ -255,7 +255,7 @@ footer {
     height: 200px;
     flex: 0 0 200px;
     object-fit: contain;
-    display: block;
+    display: inline-block;
 }
 
 /* UTILITIES */
