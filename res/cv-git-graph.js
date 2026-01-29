@@ -1,10 +1,30 @@
-const MAIN_BRANCH = 'life';
-const BRANCH_ORDER = ['life', 'academic', 'work'];
-const BRANCH_COLORS = {
-    'life': '#006699',
-    'work': '#3385ad',
-    'academic': '#66a3c2',
+const BRANCHES = {
+    'life': {
+        color: '#006699',
+        mainBranch: true,
+        branchOrder: 1
+    },
+    'academic': {
+        color: '#66a3c2',
+        mainBranch: false,
+        branchOrder: 2
+    },
+    'work': {
+        color: '#3385ad',
+        mainBranch: false,
+        branchOrder: 3
+    },
 };
+
+const MAIN_BRANCH = Object.keys(BRANCHES)
+    .find(key => BRANCHES[key].mainBranch);
+
+const BRANCH_ORDER = Object.keys(BRANCHES)
+    .sort((a, b) => BRANCHES[a].branchOrder - BRANCHES[b].branchOrder);
+
+const BRANCH_COLORS = Object.fromEntries(
+    Object.entries(BRANCHES).map(([key, val]) => [key, val.color])
+);
 
 const FALLBACK_COLOR = '#999';
 
