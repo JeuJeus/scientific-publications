@@ -1,21 +1,27 @@
 const MAIN_BRANCH = 'life';
+const BRANCH_ORDER = ['life', 'academic', 'work'];
 const BRANCH_COLORS = {
     'life': '#006699',
     'work': '#3385ad',
     'academic': '#66a3c2',
 };
+
 const FALLBACK_COLOR = '#999';
+
+const EXPAND_BUTTON_ID = 'git-graph-expand-btn';
+
+let isGraphExpanded = false;
 
 const defineBranchColorsAsCssVariables = () => {
     const documentRoot = document.documentElement;
-
-    Object.entries(BRANCH_COLORS)
-        .forEach(([name, column]) =>
-            documentRoot.style.setProperty(`--branch-${name}`, column)
-        );
+    Object.entries(BRANCH_COLORS).forEach(([name, column]) =>
+        documentRoot.style.setProperty(`--branch-${name}`, column)
+    );
 };
 
 const GRAPH_CONTAINER_LEFT_PADDING = 2;
+const BUTTON_HEIGHT_SPACE = 60;
+
 const config = () => {
     return window.innerWidth <= 720 ? {
         VERTICAL_Y_COMMIT_SPACING: 80,
@@ -51,19 +57,24 @@ const mapCommitElement = element => {
     return {element, id, branch, parents, order};
 };
 
-const readInCommitNodes = container =>
-    Array.from(container.querySelectorAll('.commit'))
-        .map(commitElement => mapCommitElement(commitElement))
-        .sort((a, b) => (a.order - b.order));
+const shouldBeVisibleByCollapseAndHideState = commit => !isGraphExpanded && commit.dataset.defaultCollapsed === 'true';
 
-const getLinkColor = (childNode, parentNode) => {
-    if (!parentNode) return FALLBACK_COLOR;
-    if (parentNode.branch !== MAIN_BRANCH) {
-        return BRANCH_COLORS[parentNode.branch];
-    } else if (childNode.branch !== MAIN_BRANCH) {
-        return BRANCH_COLORS[childNode.branch];
-    }
-    return BRANCH_COLORS[MAIN_BRANCH];
+const readInCommitNodes = container => {
+    const allElements = Array.from(container.querySelectorAll('.commit'));
+
+    allElements.forEach(commit => commit.style.display = shouldBeVisibleByCollapseAndHideState(commit) ? 'none' : '');
+
+    return allElements
+        .filter(el => isGraphExpanded || el.dataset.defaultCollapsed !== 'true')
+        .map(mapCommitElement)
+        .sort((a, b) => (a.order - b.order));
+};
+
+const getLinkColor = (child, parent) => {
+    const getBranchColor = (branch) => BRANCH_COLORS[branch] || FALLBACK_COLOR;
+    const candidates = [parent?.branch, child?.branch, MAIN_BRANCH];
+    const activeBranch = candidates.find(b => b && b !== MAIN_BRANCH) || MAIN_BRANCH;
+    return getBranchColor(activeBranch);
 };
 
 const calculateKinkedPath = (fromNode, fromPosition, toNode, toPosition) => {
@@ -71,112 +82,97 @@ const calculateKinkedPath = (fromNode, fromPosition, toNode, toPosition) => {
         return `M ${fromPosition.x} ${fromPosition.y} L ${toPosition.x} ${toPosition.y}`;
     }
 
-    const dy = toPosition.y - fromPosition.y;
-
     const intensity = 0.2;
-    const kinkOffset = Math.abs(dy) * intensity;
-
+    const kinkOffset = Math.abs(toPosition.y - fromPosition.y) * intensity;
     const middleOfX = (fromPosition.x + toPosition.x) / 2 + kinkOffset;
     const middleOfY = (fromPosition.y + toPosition.y) / 2;
 
     return `M ${fromPosition.x} ${fromPosition.y} L ${middleOfX} ${middleOfY} L ${toPosition.x} ${toPosition.y}`;
 };
 
-const getCommitConnectionLine = (fromNode, fromPosition, toNode, toPosition, color) => ({
-    'd': calculateKinkedPath(fromNode, fromPosition, toNode, toPosition,),
-    'stroke': color,
-    'stroke-width': '3',
-    'fill': 'none',
-    'stroke-linecap': 'round',
-    'stroke-linejoin': 'round',
-    'opacity': '0.95'
-});
-
-const drawLinkAsPath = (fromNode, fromPosition, toNode, toPosition, color) => {
+const drawLinkAsPath = (childNode, childPos, parentNode, parentPos) => {
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-
-    Object.entries(getCommitConnectionLine(fromNode, fromPosition, toNode, toPosition, color))
-        .forEach(([key, val]) => path.setAttribute(key, val));
-
+    path.setAttribute('d', calculateKinkedPath(childNode, childPos, parentNode, parentPos));
+    path.setAttribute('stroke', getLinkColor(childNode, parentNode));
+    path.setAttribute('stroke-width', '3');
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke-linecap', 'round');
+    path.setAttribute('opacity', '0.95');
     return path;
 };
 
-const drawLinkToChildNodes = (commitNodes, childNode, idPosition, canvas, childPosition) => parentId => {
-    const parentNode = commitNodes.find(node => node.id === parentId);
-    const color = getLinkColor(childNode, parentNode);
-
-    const parentPosition = idPosition.get(parentId);
-    if (!parentPosition) return;
-
-    canvas.appendChild(drawLinkAsPath(childNode, childPosition, parentNode, parentPosition, color));
-};
-
 const drawNode = (idPosition, childNode, commitNodes, canvas) => {
-    const childPosition = idPosition.get(childNode.id);
-    if (!childPosition || childNode.parents.length === 0) return;
+    const childPos = idPosition.get(childNode.id);
+    if (!childPos) return;
 
-    childNode.parents
-        .forEach(drawLinkToChildNodes(commitNodes, childNode, idPosition, canvas, childPosition));
+    childNode.parents.forEach(parentId => {
+        const parentNode = commitNodes.find(n => n.id === parentId);
+        const parentPos = idPosition.get(parentId);
+        if (parentNode && parentPos) {
+            canvas.appendChild(drawLinkAsPath(childNode, childPos, parentNode, parentPos));
+        }
+    });
 };
 
-const drawNodes = (commitNodes, idPosition, canvas) => commitNodes.forEach(childNode => drawNode(idPosition, childNode, commitNodes, canvas));
-
-const ensureCommitsOnTop = commitNodes => commitNodes.forEach(commitNode => commitNode.element.style.zIndex = 2);
-
-const generateCommitCoordinates = (branchIndex, commitNode, commitNodes, idx) => {
-    const lane = branchIndex.get(commitNode.branch);
-    const x = GRAPH_CONTAINER_LEFT_PADDING + lane * config().HORIZONTAL_LANE_GAP;
-    const y = config().VERTICAL_Y_COMMIT_SPACING / 2 + (commitNodes.length - 1 - idx) * config().VERTICAL_Y_COMMIT_SPACING;
-    return {x, y};
+const drawNodes = (commitNodes, idPosition, canvas) => {
+    commitNodes.forEach(childNode => drawNode(idPosition, childNode, commitNodes, canvas));
 };
 
 const updateCommitElement = (commitNode, {x, y}) => {
     const dot = commitNode.element.querySelector('.commit-dot');
     const message = commitNode.element.querySelector('.commit-message');
-
-    const commitMeta = message.querySelector('.commit-meta');
-
     const backgroundColor = BRANCH_COLORS[commitNode.branch] || FALLBACK_COLOR;
 
     if (dot) {
-        if (!dot.style.background) dot.style.background = backgroundColor;
+        dot.style.background = backgroundColor;
         dot.style.left = `${x - 9}px`;
         dot.style.top = `${y - 9}px`;
     }
-
     if (message) {
         message.style.top = `${y - 9}px`;
-
-        if (commitMeta) {
-            commitMeta.style.background = backgroundColor;
-            commitMeta.style.color = backgroundColor;
+        const meta = message.querySelector('.commit-meta');
+        if (meta) {
+            meta.style.background = backgroundColor;
+            meta.style.color = '#fff'; // Improved readability
         }
     }
 };
 
-const calculateNodePositions = (commitNodes, branchIndex) =>
-    new Map(commitNodes.map((commitNode, idx) => {
-        const coords = generateCommitCoordinates(branchIndex, commitNode, commitNodes, idx);
-        return [commitNode.id, coords];
+const generateBranchIndex = () => new Map(BRANCH_ORDER.map((name, i) => [name, i]));
+
+const onGraphExtendButtonClick = () => () => {
+    isGraphExpanded = !isGraphExpanded;
+    rerenderGraph();
+};
+
+const updateExpandButton = (container) => {
+    let expandButton = document.getElementById(EXPAND_BUTTON_ID);
+    if (!expandButton) {
+        expandButton = document.createElement('div');
+        expandButton.id = EXPAND_BUTTON_ID;
+        expandButton.addEventListener('click', onGraphExtendButtonClick());
+        container.appendChild(expandButton);
+    }
+    expandButton.innerHTML = isGraphExpanded ? '&#8593; Collapse History' : '&#8595; Show Earlier History (2017-2021)';
+};
+
+const getIdPositions = (commitNodes, branchIndex) =>
+    new Map(commitNodes.map((node, idx) => {
+        const lane = branchIndex.get(node.branch) ?? 0;
+        const x = GRAPH_CONTAINER_LEFT_PADDING + lane * config().HORIZONTAL_LANE_GAP;
+        const y = config().VERTICAL_Y_COMMIT_SPACING / 2 + (commitNodes.length - 1 - idx) * config().VERTICAL_Y_COMMIT_SPACING;
+        return [node.id, {x, y}];
     }));
-
-const generateBranchIndex = commitNodes =>
-    commitNodes
-        .reduce((m, c) => {
-            if (!m.has(c.branch)) m.set(c.branch, m.size);
-            return m;
-        }, new Map());
-
 
 const renderCommitNodes = (container, canvas) => {
     const commitNodes = readInCommitNodes(container);
+    const branchIndex = generateBranchIndex();
+    const idPosition = getIdPositions(commitNodes, branchIndex);
 
-    const branchIndex = generateBranchIndex(commitNodes);
-    const idPosition = calculateNodePositions(commitNodes, branchIndex);
+    const totalHeight = Math.max(240, (commitNodes.length * config().VERTICAL_Y_COMMIT_SPACING) + BUTTON_HEIGHT_SPACE);
+    container.style.minHeight = totalHeight + 'px';
+    container.style.position = 'relative';
 
-    const height = Math.max(240, (commitNodes.length) * config().VERTICAL_Y_COMMIT_SPACING);
-
-    container.style.minHeight = height + 'px';
     canvas.setAttribute('width', container.clientWidth);
     canvas.setAttribute('height', container.clientHeight);
 
@@ -186,46 +182,30 @@ const renderCommitNodes = (container, canvas) => {
     });
 
     drawNodes(commitNodes, idPosition, canvas);
-
-    ensureCommitsOnTop(commitNodes);
+    updateExpandButton(container);
 };
 
-const getContainerAndCanvas = () => {
-    const container = document.getElementById('graph-container');
-    const canvas = document.getElementById('graph-canvas');
-    return {container, canvas};
-};
-
-const renderGitGraph = (() => {
-    const {container, canvas} = getContainerAndCanvas();
-
-    defineBranchColorsAsCssVariables();
-
-    renderCommitNodes(container, canvas);
+const getContainerAndCanvas = () => ({
+    container: document.getElementById('graph-container'),
+    canvas: document.getElementById('graph-canvas')
 });
 
-const debounce = (fn, delay) => {
-    let timeoutId;
-
-    return (...args) => {
-        if (timeoutId) {
-            clearTimeout(timeoutId);
-        }
-        timeoutId = setTimeout(() => {
-            fn(...args);
-        }, delay);
-    };
+const renderGitGraph = () => {
+    const {container, canvas} = getContainerAndCanvas();
+    defineBranchColorsAsCssVariables();
+    renderCommitNodes(container, canvas);
 };
 
 const rerenderGraph = () => {
-    const {container, canvas} = getContainerAndCanvas();
-
+    const {canvas} = getContainerAndCanvas();
     canvas.innerHTML = '';
-
-    renderCommitNodes(container, canvas);
+    renderGitGraph();
 };
 
-const handledResize = debounce(rerenderGraph, 25);
-window.addEventListener('resize', handledResize);
+window.addEventListener('resize', () => {
+    const {canvas} = getContainerAndCanvas();
+    canvas.innerHTML = '';
+    renderGitGraph();
+});
 
-document.addEventListener("DOMContentLoaded", () => renderGitGraph());
+document.addEventListener("DOMContentLoaded", renderGitGraph);

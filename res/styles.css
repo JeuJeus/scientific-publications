@@ -432,6 +432,21 @@ footer {
     }
 }
 
+.git-graph #git-graph-expand-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    font-style: italic;
+    font-size: 0.9rem;
+    z-index: 100;
+    height: 30px;
+    line-height: 30px;
+}
+
 /* CONTACT */
 
 .link-group {
