@@ -1,7 +1,35 @@
 const BRANCHES = {
-    'life': { color: '#006699', mainBranch: true, branchOrder: 1 },
-    'academic': { color: '#66a3c2', mainBranch: false, branchOrder: 2 },
-    'work': { color: '#3385ad', mainBranch: false, branchOrder: 3 },
+    'life': {
+        color: {
+            light: '#006699',
+            dark: '#10b981'
+        },
+        mainBranch: true,
+        branchOrder: 1
+    },
+    'academic': {
+        color: {
+            light: '#66a3c2',
+            dark: '#34d399'
+        },
+        mainBranch: false,
+        branchOrder: 2
+    },
+    'work': {
+        color: {
+            light: '#3385ad',
+            dark: '#059669'
+        },
+        mainBranch: false,
+        branchOrder: 3
+    },
+};
+
+const FALLBACK_COLORS = {
+    color: {
+        light: '#999',
+        dark: '#d0d0d0',
+    }
 };
 
 const getMainBranch = () => Object.keys(BRANCHES).find(key => BRANCHES[key].mainBranch);
@@ -9,8 +37,25 @@ const getMainBranch = () => Object.keys(BRANCHES).find(key => BRANCHES[key].main
 const getBranchOrder = () => Object.keys(BRANCHES)
     .sort((a, b) => BRANCHES[a].branchOrder - BRANCHES[b].branchOrder);
 
+const getDarkModeMatchingColor = val => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+
+    switch (currentTheme) {
+        case 'dark':
+            return val.color.dark;
+        case 'light':
+            return val.color.light;
+    }
+
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return val.color.dark;
+    }
+
+    return val.color.light;
+}
+
 const getBranchColors = branchEntries => Object.fromEntries(
-    branchEntries.map(([key, val]) => [key, val.color])
+    branchEntries.map(([key, val]) => [key, getDarkModeMatchingColor(val)])
 );
 
 const config = () => {
@@ -23,7 +68,7 @@ const config = () => {
         BRANCH_ORDER: getBranchOrder(),
         BRANCH_COLORS: getBranchColors(branchEntries),
 
-        FALLBACK_COLOR: '#999',
+        FALLBACK_COLOR: getDarkModeMatchingColor(FALLBACK_COLORS),
         EXPAND_BUTTON_ID: 'git-graph-expand-btn',
         GRAPH_CONTAINER_LEFT_PADDING: 2,
         BUTTON_HEIGHT_SPACE: 60,
@@ -264,10 +309,19 @@ const rerenderGraph = () => {
     renderGitGraph();
 };
 
-window.addEventListener('resize', () => {
-    const {canvas} = getContainerAndCanvas();
-    canvas.innerHTML = '';
-    renderGitGraph();
+window.addEventListener('resize', () => rerenderGraph());
+
+window.addEventListener('color-scheme-toggle', (event) => {
+    if (event.detail.key !== 'theme') return;
+
+    rerenderGraph();
+});
+
+window.addEventListener('storage', (event) => {
+    if (event.key !== 'theme') return;
+
+    document.documentElement.setAttribute('data-theme', event.newValue);
+    rerenderGraph();
 });
 
 document.addEventListener("DOMContentLoaded", renderGitGraph);

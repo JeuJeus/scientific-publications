@@ -4,6 +4,10 @@ const toggleTheme = () => {
 
     document.documentElement.setAttribute('data-theme', targetTheme);
     localStorage.setItem('theme', targetTheme);
+
+    window.dispatchEvent(new CustomEvent('color-scheme-toggle', {
+        detail: { key: 'theme', value: targetTheme }
+    }));
 };
 
 const initTheme = () => {
