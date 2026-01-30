@@ -251,11 +251,24 @@ h2 {
     margin-top: 1em;
 }
 
+.theme-toggle-button {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.theme-toggle-button:hover {
+    color: var(--accent-color);
+}
+
 footer {
-    text-align: center;
-    padding-top: var(--spacing-standard);
-    color: var(--color-text-footer);
-    font-size: 0.9em;
+    padding: 2rem 0;
+    color: var(--color-status-label);
 }
 
 /* ABOUT ME SECTION */
