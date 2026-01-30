@@ -45,11 +45,11 @@
         --color-text-muted: #6b7280;
         --color-text-footer: #4b5563;
 
-        --color-border-light: #1f2937;
-        --color-border-strong: #374151;
+        --color-border-light: #064e3b;
+        --color-border-strong: #1e3a34;
         --color-border-somewhat-light: #2d3748;
 
-        --color-status-label: #9ca3af;
+        --color-status-label: #8ba39e;
         --color-pending-text: #4b5563;
         --color-pending-card: #0a0a0a;
 
@@ -203,6 +203,12 @@ h2 {
     overflow: hidden;
 }
 
+[data-theme='dark'] .publication-card.pending {
+    border-color: #444; /* Darker dash */
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #aaa; /* Slightly dimmed text, but still legible */
+}
+
 .publication-card.pending::after {
     content: "";
     position: absolute;
@@ -222,6 +228,10 @@ h2 {
 .skeleton-text {
     color: var(--color-pending-text);
     font-style: italic;
+}
+
+[data-theme='dark'] .skeleton-text {
+    color: var(--accent-color-dark);
 }
 
 .status-label {
