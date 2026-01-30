@@ -50,7 +50,7 @@
         --color-border-somewhat-light: #2d3748;
 
         --color-status-label: #8ba39e;
-        --color-pending-text: #4b5563;
+        --color-pending-text: #555f58;
         --color-pending-card: #0a0a0a;
 
         --color-meta-bg: #065f46;
@@ -204,9 +204,9 @@ h2 {
 }
 
 [data-theme='dark'] .publication-card.pending {
-    border-color: #444; /* Darker dash */
+    border-color: #444;
     background-color: rgba(255, 255, 255, 0.1);
-    color: #aaa; /* Slightly dimmed text, but still legible */
+    color: #aaa;
 }
 
 .publication-card.pending::after {
