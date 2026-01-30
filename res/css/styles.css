@@ -13,11 +13,10 @@
     --color-text-primary: #222;
     --color-text-secondary: #444;
     --color-text-muted: #555;
-    --color-text-footer: #666;
     --color-status-label: #777;
     --color-pending-text: #999;
 
-    --color-meta-bg: #c9e7ff;
+    --color-meta-background: #c9e7ff;
     --color-pending-card: #fafafa;
 
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", "Noto Sans Mono", "Oxygen Mono", "Courier New", monospace;
@@ -31,7 +30,7 @@
 }
 
 :root[data-theme="dark"] {
-    --background-color-dark: #000;
+    --background-color-dark: #121212;
     --text-color-dark: #e5e5e5;
 
     --accent-color: #10b981;
@@ -43,7 +42,6 @@
     --color-text-primary: #e5e5e5;
     --color-text-secondary: #9ca3af;
     --color-text-muted: #6b7280;
-    --color-text-footer: #4b5563;
 
     --color-border-light: #064e3b;
     --color-border-strong: #1e3a34;
@@ -53,7 +51,7 @@
     --color-pending-text: #555f58;
     --color-pending-card: #0a0a0a;
 
-    --color-meta-bg: #065f46;
+    --color-meta-background: #065f46;
 }
 
 html, body {
@@ -209,7 +207,7 @@ h2 {
 
 [data-theme='dark'] .publication-card.pending {
     border-color: #444;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
     color: #aaa;
 }
 
@@ -458,10 +456,10 @@ footer {
 
 .git-graph .commit .commit-meta {
     font-size: 0.75rem;
-    color: var(--color-meta-bg);
+    color: var(--color-meta-background);
     margin-right: 1em;
     padding: 4px 2px 2px 2px;
-    background: var(--color-meta-bg);
+    background: var(--color-meta-background);
     text-decoration: none;
     border-radius: 0 4px 4px 0;
 }
