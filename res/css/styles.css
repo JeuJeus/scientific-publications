@@ -31,29 +31,29 @@
 }
 
 :root[data-theme="dark"] {
-        --background-color-dark: #000;
-        --text-color-dark: #e5e5e5;
+    --background-color-dark: #000;
+    --text-color-dark: #e5e5e5;
 
-        --accent-color: #10b981;
-        --accent-color-dark: #059669;
-        --accent-color-really-light: #064e3b;
+    --accent-color: #10b981;
+    --accent-color-dark: #059669;
+    --accent-color-really-light: #064e3b;
 
-        --color-white: #000;
-        --color-heading: #ececec;
-        --color-text-primary: #e5e5e5;
-        --color-text-secondary: #9ca3af;
-        --color-text-muted: #6b7280;
-        --color-text-footer: #4b5563;
+    --color-white: #000;
+    --color-heading: #ececec;
+    --color-text-primary: #e5e5e5;
+    --color-text-secondary: #9ca3af;
+    --color-text-muted: #6b7280;
+    --color-text-footer: #4b5563;
 
-        --color-border-light: #064e3b;
-        --color-border-strong: #1e3a34;
-        --color-border-somewhat-light: #2d3748;
+    --color-border-light: #064e3b;
+    --color-border-strong: #1e3a34;
+    --color-border-somewhat-light: #2d3748;
 
-        --color-status-label: #8ba39e;
-        --color-pending-text: #555f58;
-        --color-pending-card: #0a0a0a;
+    --color-status-label: #8ba39e;
+    --color-pending-text: #555f58;
+    --color-pending-card: #0a0a0a;
 
-        --color-meta-bg: #065f46;
+    --color-meta-bg: #065f46;
 }
 
 html, body {
@@ -542,6 +542,11 @@ footer {
 
 /* FOOTER */
 .footer-text {
+    text-align: center;
+}
+
+.footer-text-how-its-built {
+    font-size: x-small;
     text-align: center;
 }
 
