@@ -87,6 +87,10 @@ nav a {
     color: var(--accent-color);
 }
 
+nav #dark-mode-toggle {
+    color: var(--color-status-label);
+}
+
 a {
     color: var(--accent-color);
 }
