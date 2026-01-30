@@ -30,6 +30,32 @@
     --commit-dot-size: 14px;
 }
 
+:root[data-theme="dark"] {
+        --background-color-dark: #000;
+        --text-color-dark: #eee;
+
+        --accent-color: #10b981;
+        --accent-color-dark: #059669;
+        --accent-color-really-light: #064e3b;
+
+        --color-white: #000;
+        --color-heading: #f9fafb;
+        --color-text-primary: #eee;
+        --color-text-secondary: #9ca3af;
+        --color-text-muted: #6b7280;
+        --color-text-footer: #4b5563;
+
+        --color-border-light: #1f2937;
+        --color-border-strong: #374151;
+        --color-border-somewhat-light: #2d3748;
+
+        --color-status-label: #9ca3af;
+        --color-pending-text: #4b5563;
+        --color-pending-card: #0a0a0a;
+
+        --color-meta-bg: #065f46;
+}
+
 html, body {
     font-family: var(--font-mono), monospace;
     line-height: 1.6;
@@ -37,6 +63,12 @@ html, body {
     max-width: var(--page-max-width);
     padding: var(--spacing-standard);
 }
+
+[data-theme="dark"] body {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
+}
+
 
 input, textarea, select, button, code, pre, kbd, samp {
     font-family: inherit;
@@ -257,6 +289,10 @@ footer {
     flex: 0 0 200px;
     object-fit: contain;
     display: inline-block;
+}
+
+[data-theme="dark"] #qr-code-me {
+    filter: invert(1) hue-rotate(180deg) brightness(1);
 }
 
 /* UTILITIES */
