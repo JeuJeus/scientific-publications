@@ -32,15 +32,15 @@
 
 :root[data-theme="dark"] {
         --background-color-dark: #000;
-        --text-color-dark: #eee;
+        --text-color-dark: #e5e5e5;
 
         --accent-color: #10b981;
         --accent-color-dark: #059669;
         --accent-color-really-light: #064e3b;
 
         --color-white: #000;
-        --color-heading: #f9fafb;
-        --color-text-primary: #eee;
+        --color-heading: #ececec;
+        --color-text-primary: #e5e5e5;
         --color-text-secondary: #9ca3af;
         --color-text-muted: #6b7280;
         --color-text-footer: #4b5563;
@@ -320,7 +320,7 @@ footer {
 }
 
 [data-theme="dark"] #qr-code-me {
-    filter: invert(1) hue-rotate(180deg) brightness(1);
+    filter: invert(1) hue-rotate(180deg) brightness(0.95);
 }
 
 /* UTILITIES */
