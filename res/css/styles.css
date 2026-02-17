@@ -595,7 +595,7 @@ footer {
 /* FOOTER NEW */
 footer {
     border-top: 2px solid var(--color-border-strong);
-    background-color: var(--color-pending-card); /* Slight background distinction */
+    background-color: var(--color-pending-card);
     padding-top: var(--spacing-standard);
     margin-top: calc(var(--spacing-standard) * 2);
 }
@@ -618,6 +618,10 @@ footer {
     border-bottom: 1px solid var(--color-border-light);
     display: inline-block;
     padding-bottom: 0.25rem;
+}
+
+.footer-column h3:not(:first-child) {
+    margin-top: 1.5rem;
 }
 
 .footer-column p {
