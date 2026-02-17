@@ -124,13 +124,7 @@ nav a {
 }
 
 nav a:hover {
-    background-color: var(--accent-color-really-light);
     color: var(--accent-color-dark);
-}
-
-[data-theme='dark'] nav a:hover {
-    background-color: var(--color-border-light);
-    color: var(--accent-color);
 }
 
 nav #dark-mode-toggle {
@@ -154,11 +148,11 @@ nav #dark-mode-toggle:hover {
     nav a {
         padding: 0 0.25rem;
     }
+
     nav #dark-mode-toggle {
         border: unset;
     }
 }
-
 
 
 a {
@@ -722,25 +716,33 @@ footer {
 .footer-nav a {
     padding-left: 0;
     text-decoration: none;
-    color: var(--color-text-secondary);
-    transition: color 0.2s ease;
+    color: var(--accent-color);
 }
 
 .footer-nav a:hover {
-    color: var(--accent-color);
-    text-decoration: underline;
+    background-color: transparent;
+    color: var(--accent-color-dark);
+}
+
+[data-theme='dark'] .footer-nav a:hover {
+    background-color: transparent;
+    color: var(--accent-color-dark);
 }
 
 .fingerprint-link {
     font-family: var(--font-mono);
     font-size: 0.8rem;
     word-break: break-all;
-    color: var(--color-text-muted);
+    color: var(--accent-color);
     text-decoration: none;
 }
 
 .fingerprint-link:hover {
-    color: var(--accent-color);
+    color: var(--accent-color-dark);
+}
+
+[data-theme='dark'] .fingerprint-link:hover {
+    color: var(--accent-color-dark);
 }
 
 .footer-bottom {
@@ -768,6 +770,14 @@ footer {
 
 [data-theme='dark'] footer {
     background-color: var(--color-header-footer-background);
+}
+
+footer #imprint {
+    color: var(--color-text-muted);
+}
+
+footer #imprint:hover {
+    color: var(--accent-color);
 }
 
 @media (max-width: 720px) {
