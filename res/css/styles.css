@@ -18,6 +18,7 @@
 
     --color-meta-background: #c9e7ff;
     --color-pending-card: #fafafa;
+    --color-header-footer-background: #fafafa;
 
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", "Noto Sans Mono", "Oxygen Mono", "Courier New", monospace;
 
@@ -50,6 +51,7 @@
     --color-status-label: #8ba39e;
     --color-pending-text: #555f58;
     --color-pending-card: #0a0a0a;
+    --color-header-footer-background: rgba(255, 255, 255, 0.03);
 
     --color-meta-background: #065f46;
 }
@@ -76,12 +78,12 @@ input, textarea, select, button, code, pre, kbd, samp {
 header {
     padding: var(--spacing-standard) 0;
     border-bottom: 2px solid var(--color-border-strong);
-    background-color: var(--color-pending-card);
+    background-color: var(--color-header-footer-background);
     margin-bottom: var(--spacing-standard);
 }
 
 [data-theme='dark'] header {
-    background-color:  rgba(255, 255, 255, 0.03);
+    background-color: var(--color-header-footer-background);
 }
 
 .header-container {
@@ -642,7 +644,7 @@ h2 {
 /* FOOTER */
 footer {
     border-top: 2px solid var(--color-border-strong);
-    background-color: var(--color-pending-card);
+    background-color: var(--color-header-footer-background);
     padding: 2rem 0;
     padding-top: 1rem;
     margin-top: 1rem;
@@ -763,7 +765,7 @@ footer {
 }
 
 [data-theme='dark'] footer {
-    background-color: rgba(255,255,255,0.03);
+    background-color: var(--color-header-footer-background);
 }
 
 @media (max-width: 720px) {
