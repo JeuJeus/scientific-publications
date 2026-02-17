@@ -22,19 +22,24 @@
 <body>
 
 <header>
-    <div class="header-text-wrapper">
-        <h1><span class="accent-color">julius-figge@website</span>:<span class="accent-color">/</span>$ <span
-                class="terminal-prompt">█</span></h1>
-        <p>PhD Student at Leipzig University and Mercedes-Benz Tech Innovation GmbH</p>
+    <div class="header-container">
+        <div class="header-text-wrapper">
+            <h1><span class="accent-color">julius-figge@website</span>:<span class="accent-color">/</span>$ <span
+                    class="terminal-prompt">█</span></h1>
+            <p>PhD Student at Leipzig University and Mercedes-Benz Tech Innovation GmbH</p>
+        </div>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+            <span class="hamburger-icon"></span>
+        </button>
+        <nav id="main-nav" class="nav-collapsed">
+            <a href="#about">About</a>
+            <a href="#publications">Publications</a>
+            <a href="#cv">CV</a>
+            <a href="#contact">Contact</a>
+            <a id="dark-mode-toggle" href="javascript:void(0)" onclick="toggleTheme()" aria-label="Toggle Dark Mode">Theme
+                🌓︎</a>
+        </nav>
     </div>
-    <nav>
-        <a href="#about">About</a>
-        <a href="#publications">Publications</a>
-        <a href="#cv">CV</a>
-        <a href="#contact">Contact</a>
-        <a id="dark-mode-toggle" href="javascript:void(0)" onclick="toggleTheme()" aria-label="Toggle Dark Mode">Theme
-            🌓︎</a>
-    </nav>
 </header>
 
 <main>
