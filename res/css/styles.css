@@ -827,6 +827,31 @@ footer #imprint:hover {
     }
 }
 
+[data-tooltip] {
+    cursor:pointer;
+    position:relative;
+    display:inline-block;
+}
+
+[data-tooltip]::after {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translateX(-50%);
+    content: attr(data-tooltip);
+    background:var(--background-color-dark);
+    color:var(--text-color-dark);
+    padding:.3rem .5rem;
+    text-align:center;
+    border-radius:6px;
+    opacity:0;
+}
+
+[data-tooltip]:hover::after {
+    top:100%;
+    opacity:1;
+}
+
 /* IMPRINT */
 span.cmV2ZXJzZQ {
     unicode-bidi: bidi-override;
