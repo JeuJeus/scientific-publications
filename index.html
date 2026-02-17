@@ -387,43 +387,58 @@
         </div>
     </section>
 
-    <section id="contact">
-        <h2>Contact & Links</h2>
-        <p>
-            <em><span data-nosnippet class="cmV2ZXJzZQ ZW1haWw"><!-- from human to human, not ment for scraper ingestion ;) --></span></em><br>
-            PGP Fingerprint:<br>
-            <a href="https://keys.openpgp.org/search?q=B7CC+8A88+D3C4+9400+6464+435C+81C2+F596+0D1C+214E"
-               target="_blank" class="fingerprint-link">B7CC 8A88 D3C4 9400 6464 435C 81C2 F596 0D1C 214E</a>
-        </p>
-        <div class="link-group">
-            <a href="https://www.linkedin.com/juliusfigge/" target="_blank">LinkedIn</a>
-            <a href="https://scholar.google.com/citations?user=avjrQrIAAAAJ" target="_blank">Google Scholar</a>
-            <a href="https://github.com/JeuJeus" target="_blank">GitHub (Primary)</a>
-            <a href="https://github.com/juliusfigge" target="_blank">GitHub (Secondary)</a>
-        </div>
-    </section>
-
 </main>
 
-<footer>
-    <p class="footer-text">
-        <span class="copyright-info">
-            © <span class="current-year"></span> Julius Figge
-        </span>
-        <span class="footer-separator"> - </span>
-        <span class="footer-link">
-            <a href="./imprint-privacy-policy.html">Imprint & Privacy Policy</a>
-        </span>
-        <span class="footer-separator"> - </span>
-        <span class="footer-link">
-            <button type="button" class="theme-toggle-button" onclick="toggleTheme()" aria-label="Toggle Dark Mode">
-                Toggle Theme 🌓︎
-            </button>
-        </span>
-    </p>
-    <p class="footer-text-how-its-built">
-        Proudly built without libraries, frameworks, or CMS — just plain HTML, CSS, and JavaScript.
-    </p>
-</footer>
+    <footer id="contact">
+        <div class="footer-content-wrapper">
+            <div class="footer-column contact-info">
+                <h3>Contact</h3>
+                <p>
+                    <em><span data-nosnippet
+                              class="cmV2ZXJzZQ ZW1haWw">
+                    <!-- from human to human, not ment for scraper ingestion ;) --></span></em>
+                </p>
+                <p>
+                    <small>PGP Fingerprint:</small><br>
+                    <a href="https://keys.openpgp.org/search?q=B7CC+8A88+D3C4+9400+6464+435C+81C2+F596+0D1C+214E"
+                       target="_blank" class="fingerprint-link">B7CC 8A88 D3C4 9400 6464<br>435C 81C2 F596 0D1C 214E</a>
+                </p>
+            </div>
+
+            <div class="footer-column social-links">
+                <h3>Links</h3>
+                <nav class="footer-nav">
+                    <a href="https://www.linkedin.com/juliusfigge/" target="_blank">LinkedIn</a>
+                    <a href="https://scholar.google.com/citations?user=avjrQrIAAAAJ" target="_blank">Google Scholar</a>
+                    <a href="https://github.com/JeuJeus" target="_blank">GitHub (Primary)</a>
+                    <a href="https://github.com/juliusfigge" target="_blank">GitHub (Secondary)</a>
+                </nav>
+            </div>
+
+            <div class="footer-column legal-info">
+                <h3>Legal & Settings</h3>
+                <p>
+                    <span class="copyright-info">
+                        © <span class="current-year"></span> Julius Figge
+                    </span>
+                </p>
+                <p>
+                    <a href="./imprint-privacy-policy.html">Imprint & Privacy Policy</a>
+                </p>
+                <p>
+                    <button type="button" class="theme-toggle-button" onclick="toggleTheme()"
+                            aria-label="Toggle Dark Mode">
+                        Toggle Theme 🌓︎
+                    </button>
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="footer-text-how-its-built">
+                Proudly built without libraries, frameworks, or CMS — just plain HTML, CSS, and JavaScript.
+            </p>
+        </div>
+    </footer>
 </body>
 </html>
