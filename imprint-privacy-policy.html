@@ -15,15 +15,22 @@
 </head>
 <body>
 <header>
-    <h1>Imprint &amp; Privacy Policy</h1>
-    <nav aria-label="Helper navigation">
-        <a href="./index.html">↵ Scientific Publications</a>
-        <a href="javascript:void(0)" onclick="toggleTheme()" aria-label="Toggle Dark Mode">Theme 🌓︎</a>
-    </nav>
-    <nav aria-label="Main navigation">
-        <a href="#imprint">Imprint</a>
-        <a href="#privacy-policy">Privacy Policy</a>
-    </nav>
+    <div class="header-container">
+        <div class="header-text-wrapper">
+            <h1>Imprint & Privacy Policy</h1>
+        </div>
+        <nav class="imprint-nav">
+            <div>
+                <a href="./index.html">↵ Home</a>
+                <a id="dark-mode-toggle" href="javascript:void(0)" onclick="toggleTheme()" aria-label="Toggle Dark Mode">Theme
+                    🌓︎</a>
+            </div>
+            <div>
+                <a href="#imprint">Imprint</a>
+                <a href="#privacy-policy">Privacy Policy</a>
+            </div>
+        </nav>
+    </div>
 </header>
 <main>
     <section id="imprint">
@@ -140,21 +147,38 @@
 </main>
 
 <footer>
-    <p class="footer-text">
-        <span class="copyright-info">
-            © <span class="current-year"></span> Julius Figge
-        </span>
-        <span class="footer-separator"> - </span>
-        <span class="footer-link">
+    <div class="footer-content-wrapper">
+        <div class="footer-column navigation">
+            <h3>Navigation</h3>
+            <nav class="footer-nav">
+                <a href="#imprint">Imprint</a>
+                <a href="#privacy-policy">Privacy Policy</a>
+            </nav>
+        </div>
+
+        <div class="footer-column legal-info">
+            <h3>Settings</h3>
+            <p>
+                <button type="button" class="theme-toggle-button" onclick="toggleTheme()"
+                        aria-label="Toggle Dark Mode">
+                    Toggle Theme 🌓︎
+                </button>
+            </p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p class="footer-legal-line">
+                <span class="copyright-info">
+                        © <span class="current-year"></span> Julius Figge
+                    </span>
+            <span class="footer-separator">|</span>
             <a href="./index.html">↵ Scientific Publications</a>
-        </span>
-        <span class="footer-separator"> - </span>
-        <span class="footer-link">
-            <button type="button" class="theme-toggle-button" onclick="toggleTheme()" aria-label="Toggle Dark Mode">
-                Toggle Theme 🌓︎
-            </button>
-        </span>
-    </p>
+        </p>
+        <p class="footer-text-how-its-built">
+            Proudly built without libraries, frameworks, or CMS — just plain HTML, CSS, and JavaScript.
+        </p>
+    </div>
 </footer>
 </body>
 </html>
