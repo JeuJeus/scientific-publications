@@ -590,6 +590,12 @@ footer {
     .footer-text .footer-separator {
         display: none;
     }
+
+    .footer-legal-line .copyright-info,
+    .footer-legal-line a {
+        display: block;
+        margin-bottom: 0.25rem;
+    }
 }
 
 /* FOOTER NEW */
@@ -620,9 +626,6 @@ footer {
     padding-bottom: 0.25rem;
 }
 
-.footer-column h3:not(:first-child) {
-    margin-top: 1.5rem;
-}
 
 .footer-column p {
     margin-top: 0.5rem;
@@ -709,6 +712,16 @@ footer {
     .footer-text-how-its-built {
         margin-right: 0.5rem;
         margin-left: 0.5rem;
+    }
+
+    .footer-legal-line .footer-separator {
+        display: none;
+    }
+
+    .footer-legal-line .copyright-info,
+    .footer-legal-line a {
+        display: block;
+        margin-bottom: 0.25rem;
     }
 }
 
