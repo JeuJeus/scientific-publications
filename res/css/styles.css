@@ -81,7 +81,7 @@ header {
 }
 
 [data-theme='dark'] header {
-    background-color: rgba(18, 18, 18, 0.95);
+    background-color:  rgba(255, 255, 255, 0.03);
 }
 
 .header-container {
