@@ -714,11 +714,13 @@ footer {
 
 .footer-nav {
     display: flex;
+    gap: 0;
     flex-direction: column;
-    gap: 0.5rem;
+    align-items: flex-start;
 }
 
 .footer-nav a {
+    padding-left: 0;
     text-decoration: none;
     color: var(--color-text-secondary);
     transition: color 0.2s ease;
@@ -796,6 +798,15 @@ footer {
     .footer-legal-line a {
         display: block;
         margin-bottom: 0.25rem;
+    }
+
+    .footer-nav {
+        align-items: unset;
+        gap: 0.5rem;
+    }
+
+    .footer-nav a {
+        padding-left: unset;
     }
 }
 
