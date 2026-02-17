@@ -75,8 +75,14 @@ input, textarea, select, button, code, pre, kbd, samp {
 
 header {
     text-align: center;
-    padding-bottom: var(--spacing-standard);
+    padding: var(--spacing-standard) 0;
     border-bottom: 2px solid var(--color-border-strong);
+    background-color: var(--color-pending-card);
+    margin-bottom: var(--spacing-standard);
+}
+
+[data-theme='dark'] header {
+    background-color: rgba(255, 255, 255, 0.03);
 }
 
 nav a {
