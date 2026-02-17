@@ -828,28 +828,35 @@ footer #imprint:hover {
 }
 
 [data-tooltip] {
-    cursor:pointer;
-    position:relative;
-    display:inline-block;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
 }
 
 [data-tooltip]::after {
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translateX(-50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
     content: attr(data-tooltip);
-    background:var(--background-color-dark);
-    color:var(--text-color-dark);
-    padding:.3rem .5rem;
-    text-align:center;
-    border-radius:6px;
-    opacity:0;
+    background: var(--color-text-primary);
+    color: var(--color-white);
+    padding: 0.3rem 0.5rem;
+    text-align: center;
+    border-radius: 6px;
+    opacity: 0;
+    font-size: 0.85rem;
+    pointer-events: none;
 }
 
 [data-tooltip]:hover::after {
-    top:100%;
-    opacity:1;
+    top: 100%;
+    opacity: 1;
+}
+
+[data-theme='dark'] [data-tooltip]::after {
+    background: var(--color-border-strong);
+    color: var(--text-color-dark);
 }
 
 /* IMPRINT */
