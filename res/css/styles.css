@@ -132,6 +132,7 @@ nav a {
     color: var(--accent-color);
     border-radius: 4px;
     font-weight: 500;
+    white-space: nowrap;
 }
 
 nav a:hover {
@@ -186,6 +187,14 @@ nav #dark-mode-toggle:hover {
         display: inline;
     }
 
+    .header-text-wrapper p {
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    h2:first-of-type {
+        margin-top: 0;
+    }
 }
 
 a {
