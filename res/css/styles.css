@@ -140,6 +140,12 @@ nav #dark-mode-toggle:hover {
     border-color: var(--accent-color);
 }
 
+#header-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
 .imprint-nav {
     display: flex;
     flex-direction: row-reverse;
@@ -159,6 +165,14 @@ nav #dark-mode-toggle:hover {
 
     nav #dark-mode-toggle {
         border: unset;
+    }
+
+    #header-nav {
+        display: block;
+    }
+
+    #nav-links, #nav-toggle {
+        display: inline;
     }
 
 }
