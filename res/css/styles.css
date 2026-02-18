@@ -419,7 +419,7 @@ h2 {
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
-    gap: 1.5rem;
+    gap: 2rem;
 }
 
 .about-me-image-wrapper {
@@ -427,25 +427,7 @@ h2 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.about-me-details {
-    width: 200px;
-    font-size: x-small;
-    color: var(--color-text-muted);
-    text-align: left;
-}
-
-.about-me-details > summary {
-    text-align: center;
-}
-
-.about-me-text {
-    text-align: left;
-}
-
-.about-me-text p:first-of-type {
-    margin-top: 0;
+    gap: 0.75rem;
 }
 
 #qr-code-me {
@@ -454,11 +436,65 @@ h2 {
     flex: 0 0 200px;
     object-fit: contain;
     display: inline-block;
+    padding: 0.75rem;
+    background: var(--color-white);
+    border-radius: 8px;
+    border: 1px solid var(--color-border-light);
 }
 
 [data-theme="dark"] #qr-code-me {
     filter: invert(1) hue-rotate(180deg) brightness(0.95);
+    background: rgba(255, 255, 255, 0.02);
+    border-color: var(--color-border-strong);
 }
+
+.about-me-details {
+    width: 200px;
+    font-size: x-small;
+    color: var(--color-text-muted);
+    text-align: left;
+    padding: 0.5rem;
+    background: var(--color-header-footer-background);
+    border-radius: 4px;
+}
+
+.about-me-details > summary {
+    text-align: center;
+    cursor: pointer;
+}
+
+.about-me-details p {
+    margin: 0.5rem 0;
+    line-height: 1.4;
+}
+
+.about-me-details p:first-of-type {
+    margin-top: 0.5rem;
+}
+
+.about-me-details p:last-child {
+    margin-bottom: 0;
+}
+
+.about-me-text {
+    flex: 1;
+    max-width: 600px;
+    text-align: left;
+}
+
+.about-me-text p {
+    line-height: 1.7;
+}
+
+.about-me-text p:first-of-type {
+    margin-top: 0;
+}
+
+.about-me-text b {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
 
 /* UTILITIES */
 
@@ -491,14 +527,25 @@ h2 {
     .about-me-wrapper {
         flex-direction: column;
         align-items: center;
-        text-align: center;
-        gap: 1rem;
+        gap: 1.25rem;
+    }
+
+    .about-me-image-wrapper {
+        width: 100%;
+    }
+
+    .about-me-text {
+        text-align: left;
     }
 
     #qr-code-me {
-        width: 240px;
-        height: 240px;
-        flex: 0 0 240px;
+        width: 220px;
+        height: 220px;
+        flex: 0 0 220px;
+    }
+
+    .about-me-details {
+        width: 220px;
     }
 
     h1 {
