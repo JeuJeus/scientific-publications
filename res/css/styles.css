@@ -124,10 +124,12 @@ nav a {
 }
 
 nav a:hover {
+    text-decoration-line: underline;
     color: var(--accent-color-dark);
 }
 
 nav #dark-mode-toggle {
+    text-decoration-line: unset;
     color: var(--color-status-label);
     border: 1px solid var(--color-border-strong);
 }
@@ -722,17 +724,18 @@ footer {
 
 .footer-nav a {
     padding-left: 0;
+    padding-bottom: 0;
     text-decoration: none;
     color: var(--accent-color);
 }
 
 .footer-nav a:hover {
+    text-decoration-line: underline;
     background-color: transparent;
     color: var(--accent-color-dark);
 }
 
 [data-theme='dark'] .footer-nav a:hover {
-    background-color: transparent;
     color: var(--accent-color-dark);
 }
 
@@ -745,6 +748,7 @@ footer {
 }
 
 .fingerprint-link:hover {
+    text-decoration-line: underline;
     color: var(--accent-color-dark);
 }
 
