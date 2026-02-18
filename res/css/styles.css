@@ -1,3 +1,7 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 :root {
     --accent-color: #006699;
     --accent-color-dark: #004c73;
@@ -24,6 +28,7 @@
 
     --page-max-width: 960px;
     --spacing-standard: 20px;
+    --spacing-mobile: 5px;
 
     --graph-spacing: 12px;
     --graph-radius: 6px;
@@ -63,6 +68,12 @@ html, body {
     margin: 0 auto;
     max-width: var(--page-max-width);
     padding: var(--spacing-standard);
+}
+
+@media (max-width: 720px) {
+    html, body {
+        padding: var(--spacing-mobile);
+    }
 }
 
 [data-theme="dark"] body {
@@ -176,7 +187,6 @@ nav #dark-mode-toggle:hover {
     }
 
 }
-
 
 a {
     color: var(--accent-color);
@@ -810,7 +820,7 @@ footer #imprint:hover {
         grid-template-columns: 1fr;
         gap: 1rem;
         text-align: center;
-        margin-block: unset;
+        margin: 0;
         padding-bottom: 1rem;
     }
 
