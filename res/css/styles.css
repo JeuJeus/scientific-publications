@@ -683,7 +683,7 @@ h2 {
 
 .git-graph #git-graph-expand-btn {
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     left: 0;
     width: 100%;
     text-align: center;
@@ -728,8 +728,7 @@ h2 {
 footer {
     border-top: 2px solid var(--color-border-strong);
     background-color: var(--color-header-footer-background);
-    padding: 2rem 0;
-    padding-top: 1rem;
+    padding: 1rem 0 2rem;
     margin-top: 1rem;
     color: var(--color-status-label);
 }
@@ -820,7 +819,7 @@ footer {
 }
 
 .fingerprint-link {
-    font-family: var(--font-mono);
+    font-family: var(--font-mono), monospace;
     font-size: 0.8rem;
     word-break: break-all;
     color: var(--accent-color);
