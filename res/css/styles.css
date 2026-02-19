@@ -683,7 +683,7 @@ h2 {
 
 .git-graph #git-graph-expand-btn {
     position: absolute;
-    bottom: 10px;
+    bottom: 0px;
     left: 0;
     width: 100%;
     text-align: center;
