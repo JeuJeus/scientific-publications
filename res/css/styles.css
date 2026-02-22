@@ -980,3 +980,66 @@ span.cmV2ZXJzZQ.cGhvbmUK:after {
     content: "751 94+"
 }
 
+@media (min-width: 1400px) {
+    :root {
+        --page-max-width: 1200px;
+    }
+
+    html, body {
+        line-height: 1.7;
+        padding: 0;
+    }
+
+    .header-container {
+        gap: 1.5rem;
+    }
+
+    .about-me-wrapper {
+        gap: 3rem;
+    }
+
+    .about-me-text {
+        max-width: 750px;
+    }
+
+    .about-me-text p {
+        line-height: 1.8;
+    }
+
+    .publication-list li {
+        padding: 1.5em;
+        margin-bottom: 20px;
+    }
+
+    .publication-card {
+        border-left-width: 8px;
+    }
+
+    .footer-content-wrapper {
+        grid-template-columns: repeat(3, minmax(300px, 1fr));
+        gap: 2rem;
+        padding-bottom: 1.5rem;
+    }
+
+    section {
+        padding: calc(var(--spacing-standard) * 1.5) 0;
+    }
+}
+
+@media (min-width: 1800px) {
+    :root {
+        --page-max-width: 1400px;
+    }
+
+    .about-me-wrapper {
+        gap: 4rem;
+    }
+
+    .about-me-text {
+        max-width: 900px;
+    }
+
+    .footer-content-wrapper {
+        gap: 3rem;
+    }
+}
