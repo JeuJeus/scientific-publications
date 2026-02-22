@@ -1031,6 +1031,11 @@ span.cmV2ZXJzZQ.cGhvbmUK:after {
         --page-max-width: 1400px;
     }
 
+    .publication-list, .git-graph {
+        padding-left: 5rem;
+        padding-right: 5rem;
+    }
+
     .about-me-wrapper {
         gap: 4rem;
     }

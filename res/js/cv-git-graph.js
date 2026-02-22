@@ -231,11 +231,11 @@ const updateCommitElement = (commitNode, {x, y}) => {
 
     if (dot) {
         dot.style.background = backgroundColor;
-        dot.style.left = `${x - 9}px`;
-        dot.style.top = `${y - 9}px`;
+        dot.style.left = `${x - 7}px`;
+        dot.style.top = `${y - 7}px`;
     }
     if (message) {
-        message.style.top = `${y - 9}px`;
+        message.style.top = `${y - 7}px`;
         const meta = message.querySelector('.commit-meta');
         if (meta) {
             meta.style.background = backgroundColor;
