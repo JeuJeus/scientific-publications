@@ -349,10 +349,22 @@ h2 {
     overflow: hidden;
 }
 
+.publication-card.preprint {
+    background: var(--color-header-footer-background);
+    border-left-color: var(--color-border-somewhat-light);
+    border-left-style: dotted;
+    position: relative;
+}
+
 [data-theme='dark'] .publication-card.pending {
     border-color: #444;
     background-color: rgba(255, 255, 255, 0.05);
     color: #aaa;
+}
+
+[data-theme='dark'] .publication-card.preprint {
+    border-color: #555;
+    background-color: rgba(255, 255, 255, 0.07);
 }
 
 .publication-card.pending::after {
@@ -391,6 +403,10 @@ h2 {
 .publication-card.pending .author.me {
     text-decoration: none;
     color: var(--color-pending-text);
+}
+
+.publication-card.preprint .author.me {
+    color: var(--color-text-secondary);
 }
 
 .publication-card.pending .publication-links {
