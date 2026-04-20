@@ -175,9 +175,10 @@ const isTopOfBranch = (commitNodes, childNode) => !commitNodes.some(other =>
     other.branch === childNode.branch && other.order > childNode.order
 );
 
-const childNodeIsLowerThanGlobalMax = (childNode, maxGlobalOrder) => childNode.order < maxGlobalOrder;
-
-const getMaxGlobalOrder = commitNodes => Math.max(...commitNodes.map(n => n.order));
+const isAbsoluteOldestNode = (commitNodes, childNode) => {
+    const minGlobalOrder = Math.min(...commitNodes.map(n => n.order));
+    return childNode.order === minGlobalOrder;
+};
 
 const drawUpwardDottedLink = (childPos, canvas, childNode) => {
     const virtualUpwardPos = {
@@ -201,6 +202,14 @@ const drawDownwardDottedLink = (childNode, idPosition, allElements, childPos, ca
     canvas.appendChild(drawLinkAsPath(childNode, childPos, mapCommitElement(hiddenEl), virtualPos, true, false));
 };
 
+const drawDownwardDottedLinkForOldest = (childPos, canvas, childNode) => {
+    const virtualPos = {
+        x: childPos.x,
+        y: childPos.y + (config().VERTICAL_Y_COMMIT_SPACING * 0.7)
+    };
+    canvas.appendChild(drawLinkAsPath(childNode, childPos, childNode, virtualPos, true, false));
+};
+
 const drawNode = (idPosition, childNode, commitNodes, canvas, allElements) => {
     const childPos = idPosition.get(childNode.id);
     if (!childPos) return;
@@ -212,10 +221,11 @@ const drawNode = (idPosition, childNode, commitNodes, canvas, allElements) => {
 
     if (!isGraphExpanded) {
         drawDownwardDottedLink(childNode, idPosition, allElements, childPos, canvas);
+    } else if (isAbsoluteOldestNode(commitNodes, childNode)) {
+        drawDownwardDottedLinkForOldest(childPos, canvas, childNode);
     }
 
-    const maxGlobalOrder = getMaxGlobalOrder(commitNodes);
-    if (isTopOfBranch(commitNodes, childNode) && childNodeIsLowerThanGlobalMax(childNode, maxGlobalOrder)) {
+    if (isTopOfBranch(commitNodes, childNode)) {
         drawUpwardDottedLink(childPos, canvas, childNode);
     }
 };
