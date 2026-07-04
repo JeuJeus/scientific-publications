@@ -636,7 +636,7 @@ h2 {
 
 .git-graph .commit .commit-message {
     position: absolute;
-    margin-left: 10em;
+    margin-left: var(--graph-message-offset, 10em);
     color: var(--color-text-primary);
     font-size: 0.95rem;
     line-height: 1.2;
@@ -693,7 +693,7 @@ h2 {
     .git-graph .commit .commit-message {
         max-width: 220px;
         font-size: small;
-        margin-left: 8em;
+        margin-left: var(--graph-message-offset, 8em);
     }
 }
 

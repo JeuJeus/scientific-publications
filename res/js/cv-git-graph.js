@@ -5,7 +5,8 @@ const BRANCHES = {
             dark: '#10b981'
         },
         mainBranch: true,
-        branchOrder: 1
+        branchOrder: 1,
+        showFutureDot: true
     },
     'academic': {
         color: {
@@ -13,7 +14,8 @@ const BRANCHES = {
             dark: '#34d399'
         },
         mainBranch: false,
-        branchOrder: 2
+        branchOrder: 3,
+        showFutureDot: true
     },
     'work': {
         color: {
@@ -21,7 +23,17 @@ const BRANCHES = {
             dark: '#059669'
         },
         mainBranch: false,
-        branchOrder: 3
+        branchOrder: 4,
+        showFutureDot: true
+    },
+    'work2': {
+        color: {
+            light: '#3993c1',
+            dark: '#07b67f'
+        },
+        mainBranch: false,
+        branchOrder: 2,
+        showFutureDot: false
     },
 };
 
@@ -67,6 +79,7 @@ const config = () => {
         MAIN_BRANCH: getMainBranch(),
         BRANCH_ORDER: getBranchOrder(),
         BRANCH_COLORS: getBranchColors(branchEntries),
+        BRANCH_SHOW_FUTURE_DOT: Object.fromEntries(branchEntries.map(([key, val]) => [key, val.showFutureDot ?? true])),
 
         FALLBACK_COLOR: getDarkModeMatchingColor(FALLBACK_COLORS),
         EXPAND_BUTTON_ID: 'git-graph-expand-btn',
@@ -85,6 +98,13 @@ const defineBranchColorsAsCssVariables = () => {
     Object.entries(config().BRANCH_COLORS).forEach(([name, column]) =>
         documentRoot.style.setProperty(`--branch-${name}`, column)
     );
+};
+
+const defineGraphLayoutCssVariables = () => {
+    const cfg = config();
+    const branchCount = cfg.BRANCH_ORDER.length;
+    const laneWidth = cfg.GRAPH_CONTAINER_LEFT_PADDING + (branchCount - 1) * cfg.HORIZONTAL_LANE_GAP + 20;
+    document.documentElement.style.setProperty('--graph-message-offset', `${laneWidth}px`);
 };
 
 const parseParentsRawToArray = parentsRaw => parentsRaw
@@ -138,8 +158,8 @@ const calculateKinkedPath = (fromNode, fromPosition, toNode, toPosition) => {
         return `M ${fromPosition.x} ${fromPosition.y} L ${toPosition.x} ${toPosition.y}`;
     }
 
-    const intensity = 0.2;
-    const kinkOffset = Math.abs(toPosition.y - fromPosition.y) * intensity;
+    const maxKink = config().HORIZONTAL_LANE_GAP;
+    const kinkOffset = Math.min(Math.abs(toPosition.y - fromPosition.y) * 0.2, maxKink);
     const middleOfX = (fromPosition.x + toPosition.x) / 2 + kinkOffset;
     const middleOfY = (fromPosition.y + toPosition.y) / 2;
 
@@ -225,7 +245,7 @@ const drawNode = (idPosition, childNode, commitNodes, canvas, allElements) => {
         drawDownwardDottedLinkForOldest(childPos, canvas, childNode);
     }
 
-    if (isTopOfBranch(commitNodes, childNode)) {
+    if (isTopOfBranch(commitNodes, childNode) && (config().BRANCH_SHOW_FUTURE_DOT[childNode.branch] ?? true)) {
         drawUpwardDottedLink(childPos, canvas, childNode);
     }
 };
@@ -310,6 +330,7 @@ const getContainerAndCanvas = () => ({
 const renderGitGraph = () => {
     const {container, canvas} = getContainerAndCanvas();
     defineBranchColorsAsCssVariables();
+    defineGraphLayoutCssVariables();
     renderCommitNodes(container, canvas);
 };
 
